@@ -1,0 +1,13 @@
+.nav-wrap{
+    width: 100vw;
+    height: 66px;
+    background-color: antiquewhite;
+    display: flex;
+    line-height: 22px;
+    padding: 20px;
+    box-sizing: border-box;
+    .logo{
+        flex: 1;
+        font-family: Pacifico-Regular;
+    }
+}

@@ -1,5 +1,6 @@
 import React from 'react'
 import {  Route, Routes } from 'react-router-dom'
+import Nav from './compontents/nav'
 import "./App.scss"
 import { 
   Home,
@@ -7,11 +8,15 @@ import {
 } from './router'
 function App () {
   return (
-      <Routes>
+    <>
+    <Nav/>
+     <Routes>
         <Route  key="home"  path={"/home"}  element={<Home/>}/>
         {/* 设置默认路由 */}
         <Route  key="default"  path={"/"} element={<NotFound/>} />
       </Routes>
+    </>
+     
   )
 }
 
