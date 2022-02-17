@@ -40,6 +40,9 @@ jobs:
         USERNAME: ${{ secrets.SSH_USERNAME }}  # 引用配置，服务器登录名
         SERVER_DESTINATION: /usr/local/meow/   # 部署到目标文件夹
 
+
+
+
     # - name: Restart server   # 第五步，重启服务
     #   uses: appleboy/ssh-action@master
     #   with:
