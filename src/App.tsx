@@ -2,6 +2,7 @@ import React from 'react'
 import {  Route, Routes } from 'react-router-dom'
 import Nav from './compontents/nav'
 import "./App.scss"
+import "./static/css/animate.scss"
 import { 
   Home,
   NotFound
