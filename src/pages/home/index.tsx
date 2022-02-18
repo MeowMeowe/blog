@@ -1,5 +1,4 @@
 import React from "react";
-import BG from "../../compontents/bg";
 import "./index.scss"
 
 export default function Home() {

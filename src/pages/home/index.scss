@@ -7,14 +7,14 @@
   padding-top: 66px;
   display: flex;
   color: #FFFFFF;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   .one-piece {
     font-family: "Microsoft Yahei",PingFangSC-Regular;
     font-weight: 500;
     font-size: 76px;
     color: #fff;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
+    line-height: 76px;
   }
 }
