@@ -42,10 +42,6 @@ jobs:
         SERVER_DESTINATION: /usr/local/meow/   # 部署到目标文件夹
 
 
-
-
-
-
     # - name: Restart server   # 第五步，重启服务
     #   uses: appleboy/ssh-action@master
     #   with:
