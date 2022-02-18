@@ -42,6 +42,8 @@ jobs:
         # PASSWD:${{secrets.SHH_PASSWD}}
         SERVER_DESTINATION: /usr/local/meow/   # 部署到目标文件夹
 
+        
+
 
 
 
