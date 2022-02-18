@@ -39,10 +39,9 @@ jobs:
         SERVER_IP: ${{ secrets.SSH_HOST }}  # 引用配置，服务器的host名（IP或者域名domain.com）
         USERNAME: ${{ secrets.SSH_NAME }}  # 引用配置，服务器登录名
         PASSWORD: ${{ secrets.SSH_PASSWORD }}  # 引用配置，服务器登录密码
-        # PASSWD:${{secrets.SHH_PASSWD}}
         SERVER_DESTINATION: /usr/local/meow/   # 部署到目标文件夹
 
-        
+
 
 
 
