@@ -14,7 +14,8 @@ function App() {
         <Routes>
           <Route key="home" path={"/home"} element={<Home />} />
           {/* 设置默认路由 */}
-          <Route key="default" path={"/"} element={<NotFound />} />
+          <Route key="default" path={"/"} element={<Home />} />
+          <Route key="default" path={"*"} element={<NotFound />} />
         </Routes>
       </div>
     </div>
