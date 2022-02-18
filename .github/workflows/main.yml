@@ -32,7 +32,7 @@ jobs:
     - name: Deploy to Server      # 第四步，rsync推送文件
       uses: AEnterprise/rsync-deploy@v1.0  # 使用别人包装好的步骤镜像
       env:
-        DEPLOY_KEY: ${{ secrets.TECENT_BLOG }}   # 引用配置，SSH私钥
+        DEPLOY_KEY: ${{ secrets.TENTCENT_BLOG }}   # 引用配置，SSH私钥
         ARGS: -avz --delete --exclude='*.pyc'   # rsync参数，排除.pyc文件
         SERVER_PORT: '22'  # SSH端口
         FOLDER: ./build/*  # 要推送的文件夹，路径相对于代码仓库的根目录
