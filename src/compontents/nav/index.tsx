@@ -9,7 +9,7 @@ export default function Nav() {
         <img className="logo-img" src="./static/img/cat.png" alt="logo" />
         <p>MeowGod`s Blog </p>
       </div>
-      <div className="control"></div>
+      <div className="control" />
       <div className="links">
         <Link to="/home">首页</Link>
         <Link to="/about">关于</Link>

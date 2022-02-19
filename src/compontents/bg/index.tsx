@@ -1,7 +1,7 @@
 // import React  from "react"
 import "./index.scss";
 
-export default function Nav() {
+export default function Bg() {
   // const [count, setCount] = useState(1);
   return (
     <div className="bg animate fadeIn">

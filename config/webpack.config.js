@@ -337,6 +337,16 @@ module.exports = function (webpackEnv) {
     module: {
       strictExportPresence: true,
       rules: [
+        {
+          test: /\.(jsx|js|ts|tsx)$/,
+          include: [
+              path.resolve(__dirname, '../components'),
+              path.resolve(__dirname, '../example')
+          ],
+          exclude: [/node_modules/],
+          use: ['eslint-loader'],
+          enforce: 'pre'
+      },
         // Handle node_modules packages that contain sourcemaps
         shouldUseSourceMap && {
           enforce: 'pre',
