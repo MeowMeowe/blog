@@ -337,16 +337,22 @@ module.exports = function (webpackEnv) {
     module: {
       strictExportPresence: true,
       rules: [
-        {
-          test: /\.(jsx|js|ts|tsx)$/,
-          include: [
-              path.resolve(__dirname, '../components'),
-              path.resolve(__dirname, '../example')
-          ],
-          exclude: [/node_modules/],
-          use: ['eslint-loader'],
-          enforce: 'pre'
-      },
+      //   {
+      //     test: /\.(jsx|js|ts|tsx)$/,
+      //     include: [
+      //         // path.resolve(__dirname, '../components'),
+      //         // path.resolve(__dirname, '../example')
+      //     ],
+      //     exclude: [/node_modules/],
+      //     loader: ['eslint-loader'],
+      //     enforce: 'pre',
+      //     options: {
+      //       emitWarning: true,
+      //       // emitError: true,  // 和emitWarning 二选一 。。。
+      //       fix: true, // 是否自动修复
+      //       failOnError: true,
+      //   },
+      // },
         // Handle node_modules packages that contain sourcemaps
         shouldUseSourceMap && {
           enforce: 'pre',
