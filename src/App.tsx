@@ -1,11 +1,12 @@
-import React from "react";
 import { Route, Routes } from "react-router-dom";
+import { Home, NotFound } from "./router";
 import Nav from "./compontents/nav";
 import Bg from "./compontents/bg";
+import React from "react";
 import "./App.scss";
-import "./static/css/animate.scss";
-import { Home, NotFound } from "./router";
+
 function App() {
+
   return (
     <div>
       <Bg />
