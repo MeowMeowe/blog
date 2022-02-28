@@ -1,9 +1,10 @@
-import React,{useState} from 'react';
-import {randomNumber} from "../../static/js/utils"
+import React from 'react';
+import {randomNumber ,randomColor} from "../../static/js/utils"
 import './index.scss';
 
 export default function Loading() {
-    return <div className="loading">
-      <div className={`loader-0${randomNumber(1,19,0)}`} />
+    return <div className="loading" style ={{color:randomColor()}}>
+      <div className={`loader-${randomNumber(1,29,0)}`} />
+      {/* <div className={`loader-30`} /> */}
     </div>;
 }

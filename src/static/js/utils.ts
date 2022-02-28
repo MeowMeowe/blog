@@ -17,7 +17,6 @@ export const LoadJs = (url: string, callback?: any) => {
 };
 
 export const randomNumber = (min: number, max: number, float: number) => {
-    console.log(Math.floor(Math.random() * (max - min + 1) + min).toFixed(float));
     return Math.floor(Math.random() * (max - min + 1) + min).toFixed(float);
 };
 

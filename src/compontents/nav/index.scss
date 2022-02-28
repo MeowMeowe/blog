@@ -6,6 +6,8 @@
   line-height: 66px;
   box-sizing: border-box;
   color: #FFFFFF;
+  position: relative;
+  z-index: 1;
   .logo {
     display: flex;
     font-family: Pacifico-Regular;

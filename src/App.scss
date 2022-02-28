@@ -4,21 +4,10 @@
     width: 100vw;
     height: 100vh;
     background-color: rgba($color: #000000, $alpha: 0);
-    .index {
-        position: relative;
-        z-index: 2;
+    .index{
+        width: 100%;
+        height: 100%;
     }
 }
 
-.xin {
-    width: 30px;
-    height: 30px;
-    position: absolute;
-    top: 100px;
-    left: 100px;
-    text-align: center;
-    line-height: 30px;
-}
-.istyle {
-    font-size: 30px;
-}
+
