@@ -50,6 +50,7 @@
         right: -30px;
         top: 76px;
         transform: rotateZ(-45deg);
+        z-index: 3;
     }
     .heart-icon-show {
         transition: right 0.5s;
@@ -71,6 +72,7 @@
         top: 81px;
         transform: rotateZ(-45deg);
         right: -30px;
+        z-index: 3;
     }
 
     .arror-icon {
@@ -80,14 +82,15 @@
         transform: rotateZ(-45deg);
         // top: 500px;
         opacity: 0;
+        z-index: 2;
     }
 
     .arror-icon-show {
         transition: all 0.15s;
         transition-timing-function: ease-in;
-        top: 86px !important;
+        top: 80px !important;
         opacity: 1;
-        right: 15px;
+        width: 20px;
     }
 
 }
