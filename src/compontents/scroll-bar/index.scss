@@ -1,0 +1,93 @@
+.scroll-bar {
+    width: 100%;
+    height: 4px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 2;
+    cursor: pointer;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+    .bar {
+        display: block;
+        height: 4px;
+        background-color: rgb(8, 238, 169);
+    }
+    .top-icon-wrap {
+        width: 40px;
+        height: 40px;
+        position: fixed;
+        right: -40px;
+        bottom: 66px;
+        background-color: rgba(8, 238, 169, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .top-icon {
+            width: 30px;
+            transform: rotateZ(-90deg);
+        }
+    }
+    .top-icon-hide {
+        transition: all 0.5s;
+        transition-delay: 0.05s;
+        transition-timing-function: ease-in;
+        right: -40px;
+    }
+    .top-icon-show {
+        transition: all 0.5s;
+        transition-delay: 0.05s;
+        transition-timing-function: ease-in;
+        right: 10px;
+    }
+    .top-icon-wrap:hover .top-icon {
+        width: 35px;
+    }
+
+    .heart-icon {
+        width: 30px;
+        position: fixed;
+        right: -30px;
+        top: 76px;
+        transform: rotateZ(-45deg);
+    }
+    .heart-icon-show {
+        transition: right 0.5s;
+        transition-delay: 0.05s;
+        transition-timing-function: ease-in;
+        right: 12.5px;
+    }
+    .heart-icon-hide {
+        transition: right 1s;
+        transition-delay: 1.5s;
+        transition-timing-function: ease-in;
+        right: -30px;
+    }
+
+    .heart-arrow-icon {
+        width: 20px;
+        margin-right: 5px;
+        position: fixed;
+        top: 81px;
+        transform: rotateZ(-45deg);
+        right: -30px;
+    }
+
+    .arror-icon {
+        width: 25px;
+        position: fixed;
+        right: 17.5px;
+        transform: rotateZ(-45deg);
+        // top: 500px;
+        opacity: 0;
+    }
+
+    .arror-icon-show {
+        transition: all 0.15s;
+        transition-timing-function: ease-in;
+        top: 86px !important;
+        opacity: 1;
+        right: 15px;
+    }
+
+}

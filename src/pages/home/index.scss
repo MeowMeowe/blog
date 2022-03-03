@@ -1,30 +1,59 @@
 .home {
-  width: 100%;
-  height: 100vh;
-  position: absolute;
-  left: 0;
-  top: 0;
-  padding-top: 66px;
-  display: flex;
-  color: #ffffff;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  .one-piece {
-    // height: 300px;
-    font-family: "Microsoft Yahei", PingFangSC-Regular;
-    font-weight: 500;
-    font-size: 76px;
-    color: #fff;
-    line-height: 76px;
-    margin-top: -50px;
-    margin-bottom: 30px;
-    cursor: pointer;
-  }
-  .text-line {
-    width: 100px;
-    height: 4px;
-    background-color: rgb(8, 238, 169);
-    margin-bottom: 20px;
-  }
+    width: 100%;
+    height: auto;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    &-header {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        padding-top: 66px;
+        display: flex;
+        color: #ffffff;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        &-one-piece {
+            font-family: 'Microsoft Yahei', PingFangSC-Regular;
+            font-weight: 500;
+            font-size: 76px;
+            color: #fff;
+            line-height: 76px;
+            margin-top: -50px;
+            margin-bottom: 30px;
+            cursor: pointer;
+            text-align: center;
+        }
+        &-text-line {
+            width: 66px;
+            height: 4px;
+            background-color: rgb(8, 238, 169);
+            margin-bottom: 20px;
+        }
+        &-scroll-down-icon {
+            position: absolute;
+            bottom: 30px;
+            left: calc(50% - 10px);
+            border-right: 3px solid;
+            border-top: 3px solid;
+            border-color: rgba(255, 255, 255, 0.5);
+            border-radius: 2px;
+            box-sizing: unset;
+            height: 20px;
+            width: 20px;
+            -webkit-transform: rotate(135deg);
+            transform: rotate(135deg);
+            cursor: pointer;
+            &:hover {
+                border-color: rgba(255, 255, 255, 1);
+            }
+        }
+    }
+    &-middle {
+        width: 100%;
+        height: 10000px;
+        background-color: #fff;
+    }
 }
