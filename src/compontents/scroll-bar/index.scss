@@ -26,6 +26,7 @@
         cursor: pointer;
         .top-icon {
             width: 30px;
+            height: 30px;
             transform: rotateZ(-90deg);
         }
     }
@@ -43,10 +44,12 @@
     }
     .top-icon-wrap:hover .top-icon {
         width: 35px;
+        height: 35px;
     }
 
     .heart-icon {
         width: 30px;
+        height: 30px;
         position: fixed;
         right: -30px;
         top: 76px;
@@ -68,6 +71,7 @@
 
     .heart-arrow-icon {
         width: 20px;
+        height: 20px;
         margin-right: 5px;
         position: fixed;
         top: 81px;
@@ -78,6 +82,7 @@
 
     .arror-icon {
         width: 25px;
+        height: 25px;
         position: fixed;
         right: 17.5px;
         transform: rotateZ(-45deg);
@@ -93,6 +98,7 @@
     0% {
         opacity: 0;
         width: 20px;
+        height: 20px;
     }
     100% {
         top: 80px;
