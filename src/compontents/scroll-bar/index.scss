@@ -5,12 +5,12 @@
     left: 0;
     top: 0;
     z-index: 2;
-    cursor: pointer;
     border-left: 1px solid rgba(0, 0, 0, 0.1);
     .bar {
         display: block;
         height: 4px;
         background-color: rgb(8, 238, 169);
+        cursor: pointer;
     }
     .top-icon-wrap {
         width: 40px;
@@ -23,6 +23,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        cursor: pointer;
         .top-icon {
             width: 30px;
             transform: rotateZ(-90deg);
@@ -80,17 +81,21 @@
         position: fixed;
         right: 17.5px;
         transform: rotateZ(-45deg);
-        // top: 500px;
         opacity: 0;
         z-index: 2;
     }
 
     .arror-icon-show {
-        transition: all 0.15s;
-        transition-timing-function: ease-in;
-        top: 80px !important;
-        opacity: 1;
+        animation: xiu 0.2s ease-out 0s 1;
+    }
+}
+@keyframes xiu {
+    0% {
+        opacity: 0;
         width: 20px;
     }
-
+    100% {
+        top: 80px;
+        opacity: 1;
+    }
 }

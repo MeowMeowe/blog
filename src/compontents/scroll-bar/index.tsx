@@ -35,16 +35,16 @@ export default function Solid() {
         <div className="scroll-bar">
             <i className="bar" style={{ width: `${width}%` }}></i>
             <div className={`top-icon-wrap top-icon-${isTopShow}`} onClick={scrollToTop}>
-                <img className="top-icon" src="./static/img/icon/cupid.png" alt="go-top" />
+                <img className="top-icon" src="./static/img/icon/cupid.webp" alt="go-top" />
             </div>
             <img
                 className={`${
                     isTopShow == 'show' ? 'heart-icon' : 'heart-arrow-icon'
                 } heart-icon-${isHeartShow}`}
-                src={`./static/img/icon/${isTopShow == 'show' ? 'target' : 'cupid-1'}.png`}
+                src={`./static/img/icon/${isTopShow == 'show' ? 'target' : 'cupid-1'}.webp`}
                 alt="heart"
             />
-            <img className={`arror-icon arror-icon-${isArrorShow}`} src="./static/img/icon/cupid-2.png" style={{top:window.innerHeight-136 + "px"}} alt="arror" />
+            <img className={`arror-icon arror-icon-${isArrorShow}`} src="./static/img/icon/cupid-2.webp" style={{top:window.innerHeight-136 + "px"}} alt="arror" />
         </div>
     );
 }

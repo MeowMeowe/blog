@@ -16,7 +16,7 @@ export default function Nav() {
     return (
         <nav className={`nav-wrap ${navClass}`}>
             <div className="logo">
-                <img className="logo-img" src="./static/img/cat.png" alt="logo" />
+                <img className="logo-img" src="./static/img/icon/cat.webp" alt="logo" />
                 <p>MeowGod`s Blog </p>
             </div>
             <div className="control" />

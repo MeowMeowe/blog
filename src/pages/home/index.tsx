@@ -20,6 +20,7 @@ export default function Home() {
                 <span className="home-header-scroll-down-icon" onClick={jumpToNextPage}></span>
             </div>
             <div className="home-middle"></div>
+            <div className="home-bottom"></div>
         </div>
     );
 }
