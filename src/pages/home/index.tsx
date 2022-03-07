@@ -1,5 +1,4 @@
 import React from 'react';
-import { get } from '../../static/js/axios';
 import './index.scss';
 
 export default function Home() {
