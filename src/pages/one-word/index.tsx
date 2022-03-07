@@ -6,7 +6,7 @@ export default function Home() {
     const [word, setWord] = useState('');
 
     const getWord = async () => {
-        let res = await get('https://meowgod.com:9001/api/sweet_word/randomOne', {});
+        let res = await get('https://meowgod.com/api/sweet_word/randomOne', {});
         if (res.status == 0 && res.data) {
             setWord(res.data.text);
         }
