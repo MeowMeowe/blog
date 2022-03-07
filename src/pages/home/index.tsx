@@ -10,12 +10,6 @@ export default function Home() {
         });
     };
 
-    const getWord = async () => {
-        let res = await get("http://localhost:9001/api/sweet_word/randomOne",{})
-        console.log(res)
-    }
-    getWord()
-
     return (
         <div className="home">
             <div className="home-header">
