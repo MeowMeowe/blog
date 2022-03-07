@@ -91,7 +91,7 @@
     }
 
     .arror-icon-show {
-        animation: xiu 0.2s ease-out 0s 1;
+        animation: xiu 0.85s ease-out 0s 1;
     }
 }
 @keyframes xiu {
@@ -101,6 +101,7 @@
         height: 20px;
     }
     100% {
+        right: 15px;
         top: 80px;
         opacity: 1;
     }
