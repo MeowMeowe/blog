@@ -1,4 +1,5 @@
 import React from 'react';
+import { get } from '../../static/js/axios';
 import './index.scss';
 
 export default function Home() {
@@ -8,6 +9,12 @@ export default function Home() {
             behavior: 'smooth'
         });
     };
+
+    const getWord = async () => {
+        let res = await get("http://localhost:9001/api/sweet_word/randomOne",{})
+        console.log(res)
+    }
+    getWord()
 
     return (
         <div className="home">

@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
-import { Home, NotFound ,ToolsBox } from './router';
+import { Home, NotFound ,ToolsBox,OneWord } from './router';
 import Nav from './compontents/nav';
 import Bg from './compontents/bg';
 import ScrollBar from './compontents/scroll-bar';
@@ -15,6 +15,7 @@ function App() {
             <ScrollBar />
             <Routes>
                 <Route key="home" path="/home" element={<Home />} />
+                <Route key="one-word" path="/loveyou" element={<OneWord />} />
                 <Route key="tools-box" path="/tools-box" element={< ToolsBox/>} />
                 <Route key="default" path="/" element={<Home />} />
                 <Route key="not-found" path="*" element={<NotFound />} />
