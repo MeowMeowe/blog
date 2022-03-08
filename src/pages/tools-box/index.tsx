@@ -5,7 +5,7 @@ export default function ToolsBox() {
    
 
     return (
-        <div className="home">
+        <div className="tools-box">
             
         </div>
     );

@@ -21,8 +21,9 @@ export default function Nav() {
             </div>
             <div className="control" />
             <div className="links">
-                <Link to="/home">首页</Link>
-                <Link to="/loveyou">Miao</Link>
+                <Link to="/">首页</Link>
+                <Link to="/exclusive">Miao</Link>
+                <Link to="/tools-box">工具箱</Link>
                 <Link to="/about">关于</Link>
             </div>
         </nav>

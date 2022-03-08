@@ -19,3 +19,8 @@ body {
         border-radius: 2px;
     }
 }
+
+.container {
+    position: relative;
+    z-index: 1;
+}
