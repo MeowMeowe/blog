@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import Login from '../../compontents/admin/login';
-import AdminContainer from '../../compontents/admin/admin-container';
+import Login from '@/compontents/admin/login';
+import AdminContainer from '@/compontents/admin/admin-container';
 import './index.scss';
 
 export default function SmkAdmin() {

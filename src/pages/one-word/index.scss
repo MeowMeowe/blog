@@ -6,8 +6,11 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    color: #ffffff;
-    font-size: 40px;
-    line-height: 60px;
-    text-align: center;
+    .word{
+        color: #ffffff;
+        font-size: 36px;
+        line-height: 60px;
+        text-align: center;
+        padding: 10px;
+    }
 }

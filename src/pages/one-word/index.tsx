@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { get } from '../../static/js/axios';
+import { getWordApi } from "@/api/one-word"
 import './index.scss';
 
 export default function Home() {
     const [word, setWord] = useState('');
 
     const getWord = async () => {
-        let res = await get('https://meowgod.com/api/sweet_word/randomOne', {});
+        let res = await getWordApi();
         if (res.status == 0 && res.data) {
             setWord(res.data.text);
         }
@@ -19,7 +19,7 @@ export default function Home() {
 
     return (
         <div className="one-word">
-            <p> {word}</p>
+            <p className='word'> {word}</p>
         </div>
     );
 }
