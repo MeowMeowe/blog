@@ -2,19 +2,17 @@ import React, { useState, useEffect } from 'react';
 import './index.scss';
 
 export default function Solid() {
-    const [width, setWidth] = useState(0);
+    // const [width, setWidth] = useState(0);
     const [isTopShow, setIsTopShow] = useState('');
     const [isHeartShow, setIsHeartShow] = useState('');
     const [isArrorShow, setIsArrorShow] = useState('');
     useEffect(() => {
         document.addEventListener('scroll', function () {
             if (scrollY == 0) {
-                setWidth(0);
+                // setWidth(0);
                 setIsTopShow('hide');
                 setIsHeartShow('hide');
                 setIsArrorShow('');
-            } else {
-                setWidth(((scrollY + window.innerHeight) / document.body.scrollHeight) * 100);
             }
             if (scrollY >= window.innerHeight) {
                 setIsTopShow('show');
