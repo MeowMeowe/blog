@@ -17,7 +17,7 @@
         font-size: 76px;
         color: #fff;
         line-height: 76px;
-        margin-top: 20vh;
+        margin-top: 25vh;
         margin-bottom: 30px;
         cursor: pointer;
         text-align: center;
@@ -33,26 +33,48 @@
     &-guide {
         margin-top: 15vh;
         display: flex;
-        
+
         &-scroll-down {
+            width: 130px;
+            height: 36px;
+            padding: 0 10px;
+            border-radius: 12px;
+            position: relative;
+
             .icon {
                 position: absolute;
-                bottom: 30px;
-                left: calc(50% - 10px);
-                border-right: 3px solid;
-                border-top: 3px solid;
+                display: block;
+                border-right: 4px solid;
+                border-top: 4px solid;
                 border-color: rgba(255, 255, 255, 0.5);
                 border-radius: 2px;
                 box-sizing: unset;
-                height: 20px;
-                width: 20px;
+                height: 8px;
+                width: 8px;
                 -webkit-transform: rotate(135deg);
                 transform: rotate(135deg);
                 cursor: pointer;
 
-                &:hover {
-                    border-color: rgba(255, 255, 255, 1);
+                &__1 {
+                    top: 6px;
                 }
+
+                &__2 {
+                    top: 14px;
+
+                }
+            }
+
+            .text {
+                margin-left: 20px;
+                font-size: 20px;
+                line-height: 36px;
+                color:rgba(255, 255, 255, 0.5) ;
+            }
+
+            &:hover .icon,.text {
+                border-color: rgba(255, 255, 255, 1);
+                color:rgba(255, 255, 255, 1) ;
             }
         }
 

@@ -1,9 +1,9 @@
 import React from 'react';
 import './index.scss';
 
-export default function Footer() {
+export default function Article() {
     return (
-        <div className="atricles">
+        <div className="articles">
            atricles
         </div>
     );

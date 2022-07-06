@@ -317,7 +317,7 @@ module.exports = function (webpackEnv) {
           'scheduler/tracing': 'scheduler/tracing-profiling',
         }),
         ...(modules.webpackAliases || {}),
-        '@':path.resolve('src')
+        '@': path.resolve('src')
       },
       plugins: [
         // Prevents users from importing files from outside of src/ (or node_modules/).
@@ -509,9 +509,7 @@ module.exports = function (webpackEnv) {
               use: getStyleLoaders(
                 {
                   importLoaders: 3,
-                  sourceMap: isEnvProduction
-                    ? shouldUseSourceMap
-                    : isEnvDevelopment,
+                  sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
                   modules: {
                     mode: 'icss',
                   },

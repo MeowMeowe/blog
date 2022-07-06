@@ -16,8 +16,9 @@ export default function FirstSight() {
       <p className="top-screen-line" />
       <p className="top-screen-dec">这里是MeowGod的个人主页</p>
       <div className='top-screen-guide'>
-        <div className="top-screen-guide-scroll-down" >
-          <span className="icon" onClick={jumpToNextPage}></span>
+        <div className="top-screen-guide-scroll-down"  onClick={jumpToNextPage} >
+          <span className="icon icon__1"></span>
+          <span className="icon icon__2"></span>
           <p className='text'>开始阅读</p>
         </div>
         <p className="github"></p>
