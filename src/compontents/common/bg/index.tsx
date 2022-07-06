@@ -1,5 +1,5 @@
 import React  from "react"
-import {randomNumber} from "../../static/js/utils"
+import {randomNumber} from "../../../static/js/utils"
 import "./index.scss";
 
 export default function Bg() {

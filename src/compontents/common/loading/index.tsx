@@ -1,5 +1,5 @@
 import React from 'react';
-import {randomNumber ,randomColor} from "../../static/js/utils"
+import {randomNumber ,randomColor} from "../../../static/js/utils"
 import './index.scss';
 
 export default function Loading() {
