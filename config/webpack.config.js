@@ -112,9 +112,7 @@ module.exports = function (webpackEnv) {
         loader: MiniCssExtractPlugin.loader,
         // css is located in `static/css`, use '../../' to locate index.html folder
         // in production `paths.publicUrlOrPath` can be a relative path
-        options: paths.publicUrlOrPath.startsWith('.')
-          ? { publicPath: '../../' }
-          : {},
+        options: paths.publicUrlOrPath.startsWith('.') ? { publicPath: '../../' } : {},
       },
       {
         loader: require.resolve('css-loader'),
@@ -419,11 +417,7 @@ module.exports = function (webpackEnv) {
                   ],
                 ],
 
-                plugins: [
-                  isEnvDevelopment &&
-                  shouldUseReactRefresh &&
-                  require.resolve('react-refresh/babel'),
-                ].filter(Boolean),
+                plugins: [  isEnvDevelopment &&  shouldUseReactRefresh && require.resolve('react-refresh/babel'), ].filter(Boolean),
                 // This is a feature of `babel-loader` for webpack (not Babel itself).
                 // It enables caching results in ./node_modules/.cache/babel-loader/
                 // directory for faster rebuilds.
@@ -472,9 +466,7 @@ module.exports = function (webpackEnv) {
               exclude: cssModuleRegex,
               use: getStyleLoaders({
                 importLoaders: 1,
-                sourceMap: isEnvProduction
-                  ? shouldUseSourceMap
-                  : isEnvDevelopment,
+                sourceMap: isEnvProduction ? shouldUseSourceMap: isEnvDevelopment,
                 modules: {
                   mode: 'icss',
                 },
@@ -491,9 +483,7 @@ module.exports = function (webpackEnv) {
               test: cssModuleRegex,
               use: getStyleLoaders({
                 importLoaders: 1,
-                sourceMap: isEnvProduction
-                  ? shouldUseSourceMap
-                  : isEnvDevelopment,
+                sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
                 modules: {
                   mode: 'local',
                   getLocalIdent: getCSSModuleLocalIdent,
@@ -537,9 +527,7 @@ module.exports = function (webpackEnv) {
               use: getStyleLoaders(
                 {
                   importLoaders: 3,
-                  sourceMap: isEnvProduction
-                    ? shouldUseSourceMap
-                    : isEnvDevelopment,
+                  sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
                   modules: {
                     mode: 'local',
                     getLocalIdent: getCSSModuleLocalIdent,

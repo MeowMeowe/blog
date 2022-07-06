@@ -2,7 +2,6 @@ import { Route, Routes } from 'react-router-dom';
 import { Home, NotFound, ToolsBox, OneWord, SmkAdmin } from './router';
 import { renderCompontentsByPath } from './layout/layout';
 import React from 'react';
-import './App.scss';
 
 function App() {
     return (
