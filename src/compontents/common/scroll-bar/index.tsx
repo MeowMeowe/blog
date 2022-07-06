@@ -1,4 +1,3 @@
-import { debounce } from '@/static/js/utils';
 import React, { useState, useEffect } from 'react';
 import './index.scss';
 
@@ -31,7 +30,7 @@ export default function Solid() {
     };
 
     useEffect(() => {
-        document.addEventListener('scroll', debounce(handleScroll))
+        document.addEventListener('scroll', handleScroll)
         return document.removeEventListener('scroll', handleScroll)
     });
 
