@@ -1,4 +1,4 @@
-export const LoadJs = (url: string, callback?: any) :void => {
+export const LoadJs = (url: string, callback?: any): void => {
     let domScript: any = document.createElement('script');
     domScript.src = url;
     let success =
@@ -16,11 +16,11 @@ export const LoadJs = (url: string, callback?: any) :void => {
     document.getElementsByTagName('head')[0].appendChild(domScript);
 };
 
-export const randomNumber = (min: number, max: number, float: number) :string => {
+export const randomNumber = (min: number, max: number, float: number): string => {
     return Math.floor(Math.random() * (max - min + 1) + min).toFixed(float);
 };
 
-export const randomColor = () :string => {
+export const randomColor = (): string => {
     return (
         'rgb(' +
         ~~(Math.random() * 255) +
@@ -43,4 +43,44 @@ export const disableReactDevTools = (): void => {
     }
 };
 
+export const debounce = (func: () => void, delay: number = 500, immediately: boolean = false) => {
+    let timer: null | ReturnType<typeof setTimeout> = null;
+    return function (this: any, ...args: any) {
+        if (timer) clearTimeout(timer);
+        if (immediately) {
+            let callNow = !timer; // 根据当前的定时器信息来决定要不要立即执行
+            timer = setTimeout(function () {
+                timer = null;
+            }, delay);
+            if (callNow) {
+                func.apply(this, args);
+            }
+        } else {
+            timer = setTimeout(() => {
+                func.apply(this, args);
+            }, delay)
+        }
+    }
+}
+
+export const throttle = function (func: () => void, delay: number = 500, immediately: boolean = false) {
+    let timer: null | ReturnType<typeof setTimeout> = null;
+    return function (this: any, ...args: any) {
+        if (immediately) {
+            func.apply(this, args);
+            immediately = false;
+            timer = setTimeout(() => {
+                immediately = true;
+                timer = null;
+            }, delay);
+            return;
+        }
+        if (!timer) {
+            timer = setTimeout(() => {
+                func.apply(this, args);
+                timer = null;
+            }, delay)
+        }
+    }
+}
 

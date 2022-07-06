@@ -1,3 +1,4 @@
+import { debounce } from '@/static/js/utils';
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './index.scss';
@@ -6,18 +7,16 @@ export default function Nav() {
     const [navClass, setNavClass] = useState('');
 
     const handleScroll = () => {
-        document.addEventListener('scroll', function () {
-            console.log(scrollY)
-            if (scrollY >= 66) {
-                setNavClass('fix-top');
-            } else {
-                setNavClass('');
-            }
-        });
+        console.log(scrollY)
+        if (scrollY >= 66) {
+            setNavClass('fix-top');
+        } else {
+            setNavClass('');
+        }
     }
 
     useEffect(() => {
-        handleScroll()
+        document.addEventListener('scroll', debounce(handleScroll))
         return document.removeEventListener("scroll", handleScroll)
     });
     return (
