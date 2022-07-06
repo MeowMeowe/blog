@@ -4,7 +4,7 @@ import './index.scss';
 export default function Article() {
     return (
         <div className="articles">
-           atricles
+          <div className='articles-content'></div>
         </div>
     );
 }

@@ -4,14 +4,21 @@ import './index.scss';
 
 export default function Nav() {
     const [navClass, setNavClass] = useState('');
-    useEffect(() => {
+
+    const handleScroll = () => {
         document.addEventListener('scroll', function () {
-            if (scrollY >= window.innerHeight) {
+            console.log(scrollY)
+            if (scrollY >= 66) {
                 setNavClass('fix-top');
             } else {
                 setNavClass('');
             }
         });
+    }
+
+    useEffect(() => {
+        handleScroll()
+        return document.removeEventListener("scroll", handleScroll)
     });
     return (
         <>

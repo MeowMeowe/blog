@@ -33,7 +33,7 @@ export default function Solid() {
 
     return (
         <div className="scroll-bar">
-            <i className="bar" style={{ width: `${width}%` }}></i>
+            {/* <i className="bar" style={{ width: `${width}%` }}></i> */}
             <div className={`top-icon-wrap top-icon-${isTopShow}`} onClick={scrollToTop}>
                 <img className="top-icon" src="./static/img/icon/cupid.webp" alt="go-top" />
             </div>
