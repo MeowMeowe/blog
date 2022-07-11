@@ -6,7 +6,7 @@ export default function Nav() {
     const [navClass, setNavClass] = useState('');
 
     const handleScroll = () => {
-        console.log(scrollY)
+        // console.log(scrollY)
         if (scrollY >= 66) {
             setNavClass('fix-top');
         } else {
@@ -16,8 +16,7 @@ export default function Nav() {
 
     useEffect(() => {
         document.addEventListener('scroll', handleScroll)
-        return document.removeEventListener("scroll", handleScroll)
-    });
+    },[]);
     return (
         <>
             <nav className={`nav-wrap ${navClass}`}>

@@ -84,3 +84,35 @@ export const throttle = function (func: () => void, delay: number = 500, immedia
     }
 }
 
+
+
+const isObject = (target: any) => {
+    return (typeof target === 'object' || typeof target === 'function' && target !== null)
+}
+
+
+export const cloneDeep = (target: any, map = new Map()) => {
+    if (map.get(target)) {
+        return target
+    }
+
+    let constructor = target.constructor
+    if (/^(RegExp|Date)$/i.test(constructor.name)) {
+        return new constructor(target)
+    }
+
+    if (isObject(target)) {
+        map.set(target, true)
+        const cloneTarget: any = Array.isArray(target) ? [] : {}
+        for (let prop in target) {
+            cloneTarget[prop] = cloneDeep(target[prop], map)
+        }
+        return cloneTarget
+    } else {
+        return target
+    }
+}
+
+
+
+
