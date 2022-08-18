@@ -1,4 +1,3 @@
-
 export interface IWord {
-    text:string
+    text: string;
 }

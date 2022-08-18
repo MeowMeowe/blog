@@ -1,0 +1,80 @@
+@mixin flexCenter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+$bgc: 'rgba(0, 0, 0, 0.25) ';
+
+.nav-wrap {
+    width: 100%;
+    height: 66px;
+    background-color: $bgc;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-sizing: border-box;
+    color: #ffffff;
+    line-height: 66px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    overflow: hidden;
+    .logo {
+        font-family: Pacifico-Regular;
+        cursor: pointer;
+        user-select: none;
+        font-weight: 900;
+        padding-left: 20px;
+        line-height: 20px;
+        @include flexCenter;
+        .logo-img {
+            width: 46px;
+            height: 46px;
+            margin-right: 10px;
+        }
+    }
+    .links {
+        padding-right: 20px;
+        display: flex;
+        justify-content: space-around;
+        a {
+            display: block;
+            color: currentColor;
+            min-width: 55px;
+            text-align: center;
+            &:hover {
+                background-color: $bgc;
+            }
+        }
+    }
+}
+
+.nav-controller {
+    width: 100%;
+    height: 66px;
+}
+
+.fix-top {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #fff;
+    color: rgba(0, 0, 0, 0.8);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    animation-name: navdown;
+    animation-duration: 0.75s;
+    animation-timing-function: ease-out;
+}
+
+@keyframes navdown {
+    0% {
+        top: -66px;
+        opacity: 0.1;
+    }
+    100% {
+        top: 0;
+        opacity: 1;
+    }
+}

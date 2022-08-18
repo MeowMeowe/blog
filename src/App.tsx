@@ -1,13 +1,12 @@
 import { Route, Routes } from 'react-router-dom';
 import { Home, NotFound, ToolsBox, OneWord, SmkAdmin } from './router';
 import { renderCompontentsByPath } from './layout/layout';
-import React from 'react';
-import "./App.scss"
+import './App.scss';
 
 function App() {
     return (
         <>
-            <div className='container'>
+            <div className="container">
                 <Routes>
                     <Route key="one-word" path="/exclusive" element={<OneWord />} />
                     <Route key="tools-box" path="/tools-box" element={<ToolsBox />} />

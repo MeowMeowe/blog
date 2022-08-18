@@ -1,17 +1,12 @@
-import React from 'react';
-import FirstSight from "@/compontents/home/top-screen"
-import Article from "@/compontents/home/articles"
+import FirstSight from './compontents/top-screen';
+import ArticleList from './compontents/article-list';
 import './index.scss';
 
 export default function Home() {
-  
-
     return (
         <div className="home">
-          <FirstSight/>
-          <Article/>
-          {/* <FirstSight/>
-          <FirstSight/> */}
+            <FirstSight />
+            <ArticleList />
         </div>
     );
 }

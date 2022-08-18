@@ -1,0 +1,24 @@
+.article-list {
+    width: 100%;
+    background-color: rgba($color: #000000, $alpha: 0.3);
+    position: relative;
+    overflow: hidden;
+    &-content {
+        background-color: #ffffff;
+        min-height: 100vh;
+        position: relative;
+        margin: 66px auto 0px;
+        border-radius: 4px;
+    }
+}
+@media (max-width: 768px) {
+    .article-list-content {
+        width: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    .article-list-content {
+        width: 90%;
+    }
+}

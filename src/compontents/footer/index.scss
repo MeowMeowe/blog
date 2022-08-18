@@ -1,0 +1,52 @@
+@mixin flexCenter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.footer {
+    position: relative;
+    height: 20vh;
+    // background-color: rgba($color: #000000, $alpha: 0.3);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
+    color: black;
+    line-height: 28px;
+    @include flexCenter;
+    &-logo {
+        width: 30px;
+        height: 30px;
+        margin-bottom: 10px;
+        animation: scroll-circle 8s linear infinite;
+    }
+    .logos {
+        width: 100%;
+        @include flexCenter;
+        flex-direction: row;
+        &-icon {
+            width: 30px;
+            margin: 10px;
+        }
+    }
+}
+
+@keyframes scroll-circle {
+    0% {
+        transform: scale(1);
+    }
+    20% {
+        transform: scale(0.8);
+    }
+    40% {
+        transform: scale(1.2);
+    }
+    60% {
+        transform: scale(0.8);
+    }
+    80% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
