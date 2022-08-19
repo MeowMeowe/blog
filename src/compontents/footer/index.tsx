@@ -2,9 +2,13 @@ import './index.scss';
 
 export default function Footer() {
     const renderLogos = () => {
-        const logoArr: string[] = ['CSS3', 'HTML5', 'javaScript', 'React', 'sass', 'Nodejs'];
+        const logoArr: string[] = ['CSS3', 'HTML5', 'JS', 'React', 'sass', 'Nodejs'];
         return logoArr.map((v) => {
-            return <img key={v} className="logos-icon" src={`./img/icon/${v}.webp`} alt={v} />;
+            return (
+                <div className="logos-items" key={v}>
+                    <img className="logos-icon" src={`./img/icon/${v}.webp`} alt={v} />
+                </div>
+            );
         });
     };
 

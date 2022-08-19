@@ -8,10 +8,10 @@
 .footer {
     position: relative;
     height: 20vh;
-    // background-color: rgba($color: #000000, $alpha: 0.3);
     background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
     color: black;
     line-height: 28px;
+    overflow: hidden;
     @include flexCenter;
     &-logo {
         width: 30px;
@@ -21,11 +21,22 @@
     }
     .logos {
         width: 100%;
+        height: 40px;
         @include flexCenter;
         flex-direction: row;
+        &-items {
+            width: 30px;
+            height: 40px;
+            margin: 0 5px;
+            position: relative;
+            @include flexCenter;
+        }
         &-icon {
             width: 30px;
-            margin: 10px;
+            transition: all 0.25s;
+            &:hover {
+                width: 40px;
+            }
         }
     }
 }

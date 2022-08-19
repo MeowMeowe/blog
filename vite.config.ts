@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import viteEslint from 'vite-plugin-eslint';
-import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
+// import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 
 import path from 'path';
 
@@ -11,11 +11,11 @@ export default defineConfig({
         react(),
         viteEslint({
             failOnError: false
-        }),
-        createSvgIconsPlugin({
-            iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
-            symbolId: 'icon-[dir]-[name]'
         })
+        // createSvgIconsPlugin({
+        //     iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
+        //     symbolId: 'icon-[dir]-[name]'
+        // })
     ],
     resolve: {
         alias: {

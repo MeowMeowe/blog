@@ -8,7 +8,6 @@
         min-height: 100vh;
         position: relative;
         margin: 66px auto 0px;
-        border-radius: 4px;
     }
 }
 @media (max-width: 768px) {
@@ -20,5 +19,6 @@
 @media (min-width: 768px) {
     .article-list-content {
         width: 90%;
+        border-radius: 6px;
     }
 }
