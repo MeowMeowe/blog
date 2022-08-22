@@ -6,13 +6,18 @@ export default function Solid() {
     const [isTopShow, setIsTopShow] = useState('');
     const [isHeartShow, setIsHeartShow] = useState('');
     const [isArrorShow, setIsArrorShow] = useState('');
+    const [clickToTop, setClickToTop] = useState(false);
 
     const handleScroll = () => {
+        console.log(clickToTop);
         if (scrollY == 0) {
             // setWidth(0);
+            if (clickToTop) {
+                setIsHeartShow('hide');
+            }
             setIsTopShow('hide');
-            setIsHeartShow('hide');
             setIsArrorShow('');
+            setClickToTop(() => false);
         }
         if (scrollY >= window.innerHeight) {
             setIsTopShow('show');
@@ -21,16 +26,19 @@ export default function Solid() {
     };
 
     const scrollToTop = () => {
+        setClickToTop(() => true);
         scrollTo({
             top: 0,
             behavior: 'smooth'
         });
         setIsArrorShow('show');
+        // setClickToTop(false);
     };
 
     useEffect(() => {
         document.addEventListener('scroll', handleScroll);
-    }, []);
+        return () => document.removeEventListener('scroll', handleScroll);
+    });
 
     return (
         <div className="scroll-bar">
@@ -42,7 +50,7 @@ export default function Solid() {
                 className={`${
                     isTopShow == 'show' ? 'heart-icon' : 'heart-arrow-icon'
                 } heart-icon-${isHeartShow}`}
-                src={`./img/icon/${isTopShow == 'show' ? 'target' : 'cupid-1'}.webp`}
+                src={`./img/icon/${isHeartShow == 'show' ? 'target' : 'cupid-1'}.webp`}
                 alt="heart"
             />
             <img
