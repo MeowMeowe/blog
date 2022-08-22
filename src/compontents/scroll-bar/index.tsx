@@ -9,7 +9,7 @@ export default function Solid() {
     const [clickToTop, setClickToTop] = useState(false);
 
     const handleScroll = () => {
-        console.log(clickToTop);
+        // console.log(clickToTop);
         if (scrollY == 0) {
             // setWidth(0);
             if (clickToTop) {

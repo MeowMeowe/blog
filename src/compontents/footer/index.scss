@@ -7,12 +7,13 @@
 
 .footer {
     position: relative;
-    height: 20vh;
+    height: auto;
     background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
     color: black;
     line-height: 28px;
     overflow: hidden;
     @include flexCenter;
+    padding-top: 15px;
     &-logo {
         width: 30px;
         height: 30px;
