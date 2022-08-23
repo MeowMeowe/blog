@@ -7,7 +7,7 @@
 
 body {
     &::-webkit-scrollbar {
-        width: 7px;
+        width: 8px;
     }
     &::-webkit-scrollbar-track {
         -box-shadow: inset 0 0 2px rgba(255, 255, 255, 0.7);
@@ -18,9 +18,4 @@ body {
         -box-shadow: inset 0 0 2px #000;
         border-radius: 2px;
     }
-}
-
-.container {
-    position: relative;
-    z-index: 1;
 }

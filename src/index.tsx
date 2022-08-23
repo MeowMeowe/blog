@@ -1,8 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { disableReactDevTools } from '@/utils/utils';
 import Loading from '@/compontents/loading';
-import React, { Suspense } from 'react';
-// import { render } from 'react-dom';
+import { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 if (process.env.NODE_ENV == 'production') {
@@ -22,6 +21,5 @@ const RootContainer = () => {
     );
 };
 
-const container = document.getElementById('root');
-const root = createRoot(container!);
+const root = createRoot(document.getElementById('root')!);
 root.render(<RootContainer />);

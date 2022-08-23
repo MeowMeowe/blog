@@ -2,7 +2,7 @@ import './index.scss';
 
 export default function Footer() {
     const renderLogos = () => {
-        const logoArr: string[] = ['CSS3', 'HTML5', 'JS', 'React', 'sass', 'Nodejs'];
+        const logoArr: string[] = ['CSS3', 'HTML5', 'JS', 'React', 'sass', 'Vite'];
         return logoArr.map((v) => {
             return (
                 <div className="logos-items" key={v} title={v}>
