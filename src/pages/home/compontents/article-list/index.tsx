@@ -1,4 +1,5 @@
-import React from 'react';
+import { randomNumber } from '@/utils/utils';
+import { useNavigate } from 'react-router-dom';
 import './index.scss';
 
 type ILinks = {
@@ -11,102 +12,114 @@ interface IArticles {
     desc: string;
     time: string;
     icon: string;
-    img: string;
+    cover: string;
     link: ILinks[];
     techStack: ILinks[];
     view: number;
+    star: number;
 }
 
 export default function ArticleList() {
+    const navigate = useNavigate();
     const article: IArticles[] = [
         {
             id: 1,
-            title: 'hahahaahhah',
+            title: 'ExcelJs简单应用',
             desc: 'string',
-            time: 'string',
-            icon: 'string',
-            img: 'string',
+            time: '2022-8-22',
+            icon: 'JS',
+            cover: 'JS',
             link: [
                 {
-                    icon: 'string',
+                    icon: 'JS',
                     link: 'string'
                 }
             ],
             techStack: [
                 {
-                    icon: 'string',
+                    icon: 'JS',
                     link: 'string'
                 }
             ],
-            view: 500
+            view: 500,
+            star: 100
         },
         {
-            id: 1,
-            title: 'hahahaahhah',
+            id: 2,
+            title: '个人服务器搭建',
             desc: 'string',
-            time: 'string',
-            icon: 'string',
-            img: 'string',
+            time: '2022-8-22',
+            icon: 'Nodejs',
+            cover: 'Nodejs',
             link: [
                 {
-                    icon: 'string',
+                    icon: 'Nodejs',
                     link: 'string'
                 }
             ],
             techStack: [
                 {
-                    icon: 'string',
+                    icon: 'Nodejs',
                     link: 'string'
                 }
             ],
-            view: 600
+            view: 600,
+            star: 100
         },
         {
-            id: 1,
-            title: 'hahahaahhah',
+            id: 3,
+            title: 'GithubAction简单应用',
             desc: 'string',
-            time: 'string',
-            icon: 'string',
-            img: 'string',
+            time: '2022-8-22',
+            icon: 'React',
+            cover: 'React',
             link: [
                 {
-                    icon: 'string',
+                    icon: 'React',
                     link: 'string'
                 }
             ],
             techStack: [
                 {
-                    icon: 'string',
+                    icon: 'React',
                     link: 'string'
                 }
             ],
-            view: 700
+            view: 700,
+            star: 100
         },
         {
-            id: 1,
-            title: 'hahahaahhah',
+            id: 4,
+            title: 'BiuBiuBiu~~',
             desc: 'string',
-            time: 'string',
-            icon: 'string',
-            img: 'string',
+            time: '2022-8-22',
+            icon: 'sass',
+            cover: 'sass',
             link: [
                 {
-                    icon: 'string',
+                    icon: 'sass',
                     link: 'string'
                 }
             ],
             techStack: [
                 {
-                    icon: 'string',
+                    icon: 'sass',
                     link: 'string'
                 }
             ],
-            view: 800
+            view: 800,
+            star: 100
         }
     ];
 
-    const handleLink = (link: string) => {
-        location.href = link;
+    const handleLink = (link: string | number, isOut: boolean) => {
+        console.log(11111);
+        if (isOut) {
+            location.href = link.toLocaleString();
+        } else {
+            navigate(`/articles?id=${link}`);
+            return;
+        }
     };
 
     const renderLinks = (links: ILinks[], className: string) => {
@@ -115,9 +128,13 @@ export default function ArticleList() {
                 <div
                     className={`${className}-link`}
                     key={item.link}
-                    onClick={() => handleLink(item.link)}
+                    onClick={() => handleLink(item.link, true)}
                 >
-                    <img className={`${className}-icon`} src="./img/icon/HTML5.webp" alt="" />
+                    <img
+                        className={`${className}-icon`}
+                        src={`./img/icon/${item.icon}.webp`}
+                        alt=""
+                    />
                 </div>
             );
         });
@@ -129,19 +146,55 @@ export default function ArticleList() {
                 {article.map((item) => {
                     return (
                         <div className="articles-flex-items" key={item.id}>
-                            <img className="title-icon" src="./img/icon/HTML5.webp" alt="" />
+                            <img
+                                className="title-icon"
+                                src={`./img/icon/${item.icon}.webp`}
+                                alt=""
+                            />
+
                             <h1 className="title">{item.title}</h1>
-                            <img className="cover" src="./img/bg/1.webp" alt="" />
+                            <img
+                                className="cover"
+                                src={`./img/bg/${randomNumber(1, 6, 0)}.webp`}
+                                alt=""
+                                onClick={() => handleLink(item.id, false)}
+                            />
                             <div className="desc">
-                                <p>简短的介绍</p>
+                                简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍简短的介绍
                             </div>
                             <div className="links">
-                                <div className="links-title">入口：</div>
+                                <div className="links-title">外站入口：</div>
                                 {renderLinks(item.techStack, 'links')}
                             </div>
                             <div className="tech-Stack">
-                                <div className="tech-Stack-title">技术栈：</div>
+                                <div className="tech-Stack-title">涉及技术栈：</div>
                                 {renderLinks(item.techStack, 'tech-Stack')}
+                            </div>
+                            <div className="msgs">
+                                <div className="time msgs-item-wrap">
+                                    <img
+                                        className="msgs-item-icon"
+                                        src="./img/icon/clock.webp"
+                                        alt="Time"
+                                    />
+                                    <span>{item.time}</span>
+                                </div>
+                                <div className="views msgs-item-wrap">
+                                    <img
+                                        className="msgs-item-icon"
+                                        src="./img/icon/search.webp"
+                                        alt="View"
+                                    />
+                                    <span>{item.view}</span>
+                                </div>
+                                <div className="stars msgs-item-wrap">
+                                    <img
+                                        className="msgs-item-icon"
+                                        src="./img/icon/love.webp"
+                                        alt="Love"
+                                    />
+                                    <span>{item.star}</span>
+                                </div>
                             </div>
                         </div>
                     );

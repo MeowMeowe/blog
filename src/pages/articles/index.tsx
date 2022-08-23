@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { marked } from 'marked';
 import './index.scss';
 
@@ -8,6 +8,11 @@ export default function Articles() {
             '# Marked in browser\n\nRendered by **marked**.'
         );
     };
+
+    useEffect(() => {
+        scrollTo(0, 0);
+    });
+
     return (
         <div className="articles" id="content">
             <button onClick={test}>11111</button>
