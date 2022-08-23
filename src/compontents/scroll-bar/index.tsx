@@ -19,7 +19,7 @@ export default function Solid() {
             setIsArrorShow('');
             setClickToTop(() => false);
         }
-        if (scrollY >= window.innerHeight) {
+        if (scrollY >= window.innerHeight - 66) {
             setIsTopShow('show');
             setIsHeartShow('show');
         }

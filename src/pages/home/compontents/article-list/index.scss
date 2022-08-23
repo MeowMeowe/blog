@@ -4,21 +4,118 @@
     position: relative;
     overflow: hidden;
     &-content {
-        background-color: #ffffff;
+        background-color: rgba($color: #ffffff, $alpha: 0.8);
         min-height: 100vh;
         position: relative;
         margin: 66px auto 0px;
     }
+    .articles-flex {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        box-sizing: border-box;
+        padding: 24px;
+        &-items {
+            min-height: 500px;
+            background-color: #fff;
+            border-radius: 8px;
+            margin-bottom: 24px;
+            box-sizing: border-box;
+            padding: 10px 24px;
+            overflow: hidden;
+            @include flexCenter;
+            justify-content: space-around;
+            .title-icon {
+                width: 60px;
+            }
+            .title {
+            }
+            .cover {
+                width: 100%;
+            }
+            .links {
+                display: flex;
+                flex-direction: row;
+                &-icon {
+                    width: 40px;
+                }
+                &-link {
+                }
+            }
+            .tech-Stack {
+                display: flex;
+                flex-direction: row;
+                &-icon {
+                    width: 40px;
+                }
+                &-link {
+                }
+            }
+        }
+        &-control {
+            height: 0px;
+            visibility: hidden;
+        }
+    }
 }
+
 @media (max-width: 768px) {
     .article-list-content {
         width: 100%;
     }
+    //一栏
+    .articles-flex {
+        &-items {
+            width: 100%;
+        }
+    }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 768px) and (max-width: 1279px) {
     .article-list-content {
         width: 90%;
         border-radius: 6px;
+    }
+    // 两栏
+    .articles-flex {
+        &-items {
+            width: calc(50% - 34px);
+        }
+        &-control {
+            width: calc(50% - 34px);
+        }
+    }
+}
+
+@media (min-width: 1279px) and (max-width: 1599px) {
+    .article-list-content {
+        width: 90%;
+        border-radius: 6px;
+    }
+    // 三栏
+    .articles-flex {
+        &-items {
+            width: calc(33.4% - 34px);
+        }
+        &-control {
+            width: calc(33.4% - 34px);
+        }
+    }
+}
+@media (min-width: 1599px) {
+    .article-list-content {
+        width: 90%;
+        border-radius: 6px;
+    }
+    // 三栏
+    .articles-flex {
+        &-items {
+            width: calc(25% - 34px);
+        }
+        &-control {
+            width: calc(25% - 34px);
+        }
     }
 }

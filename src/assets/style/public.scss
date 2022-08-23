@@ -7,3 +7,10 @@ $baseGreen: #36c9a3;
     overflow: hidden;
     position: relative;
 }
+
+@mixin flexCenter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
