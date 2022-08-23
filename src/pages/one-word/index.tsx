@@ -19,7 +19,7 @@ export default function Home() {
 
     return (
         <div className="one-word">
-            <p className="word"> {word}</p>
+            <p className="word"> {word || '今天没有情话，但比昨天多爱你一点。'}</p>
         </div>
     );
 }

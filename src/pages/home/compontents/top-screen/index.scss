@@ -1,14 +1,10 @@
 .top-screen {
-    position: relative;
-    width: 100%;
-    height: 100vh;
     display: flex;
     color: #ffffff;
     flex-direction: column;
-    // justify-content: center;
     align-items: center;
-    overflow: hidden;
     user-select: none;
+    @include Container;
 
     &-title {
         font-family: 'Microsoft Yahei', PingFangSC-Regular;
@@ -60,7 +56,6 @@
 
                 &__2 {
                     top: 14px;
-
                 }
             }
 
@@ -68,16 +63,14 @@
                 margin-left: 20px;
                 font-size: 20px;
                 line-height: 36px;
-                color:rgba(255, 255, 255, 0.5) ;
+                color: rgba(255, 255, 255, 0.5);
             }
 
-            &:hover .icon,.text {
+            &:hover .icon,
+            .text {
                 border-color: rgba(255, 255, 255, 1);
-                color:rgba(255, 255, 255, 1) ;
+                color: rgba(255, 255, 255, 1);
             }
         }
-
     }
-
-
 }

@@ -6,5 +6,6 @@ const NotFound = lazy(() => import('@/pages/not-found'));
 const ToolsBox = lazy(() => import('@/pages/tools-box'));
 const OneWord = lazy(() => import('@/pages/one-word'));
 const SmkAdmin = lazy(() => import('@/pages/smk-admin'));
+const Articles = lazy(() => import('@/pages/articles'));
 
-export { Home, NotFound, ToolsBox, OneWord, SmkAdmin };
+export { Home, NotFound, ToolsBox, OneWord, SmkAdmin, Articles };

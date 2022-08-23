@@ -1,12 +1,10 @@
 .one-word {
-    width: 100%;
-    height: 100vh;
-    position: relative;
+    @include Container;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    .word{
+    .word {
         color: #ffffff;
         font-size: 36px;
         line-height: 60px;

@@ -1,5 +1,5 @@
-import { debounce } from '@/utils/utils';
-import React, { useState, useEffect } from 'react';
+import { throttle } from '@/utils/utils';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './index.scss';
 
@@ -31,7 +31,7 @@ export default function Nav() {
     useEffect(() => {
         document.addEventListener('scroll', handleScroll);
         document.addEventListener('click', hanbleDomClick);
-        window.onresize = debounce(handleResize, 100);
+        window.onresize = throttle(handleResize, 100);
         return () => {
             document.removeEventListener('scroll', handleScroll);
             document.removeEventListener('click', hanbleDomClick);
