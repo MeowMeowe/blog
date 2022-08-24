@@ -1,6 +1,7 @@
 import { randomNumber } from '@/utils/utils';
 import { useNavigate } from 'react-router-dom';
 import './index.scss';
+import articles from './index.json';
 
 type ILinks = {
     icon: string;
@@ -21,96 +22,7 @@ interface IArticles {
 
 export default function ArticleList() {
     const navigate = useNavigate();
-    const article: IArticles[] = [
-        {
-            id: 1,
-            title: 'ExcelJs简单应用',
-            desc: 'string',
-            time: '2022-8-22',
-            icon: 'JS',
-            cover: 'JS',
-            link: [
-                {
-                    icon: 'JS',
-                    link: 'string'
-                }
-            ],
-            techStack: [
-                {
-                    icon: 'JS',
-                    link: 'string'
-                }
-            ],
-            view: 500,
-            star: 100
-        },
-        {
-            id: 2,
-            title: '个人服务器搭建',
-            desc: 'string',
-            time: '2022-8-22',
-            icon: 'Nodejs',
-            cover: 'Nodejs',
-            link: [
-                {
-                    icon: 'Nodejs',
-                    link: 'string'
-                }
-            ],
-            techStack: [
-                {
-                    icon: 'Nodejs',
-                    link: 'string'
-                }
-            ],
-            view: 600,
-            star: 100
-        },
-        {
-            id: 3,
-            title: 'GithubAction简单应用',
-            desc: 'string',
-            time: '2022-8-22',
-            icon: 'React',
-            cover: 'React',
-            link: [
-                {
-                    icon: 'React',
-                    link: 'string'
-                }
-            ],
-            techStack: [
-                {
-                    icon: 'React',
-                    link: 'string'
-                }
-            ],
-            view: 700,
-            star: 100
-        },
-        {
-            id: 4,
-            title: 'BiuBiuBiu~~',
-            desc: 'string',
-            time: '2022-8-22',
-            icon: 'sass',
-            cover: 'sass',
-            link: [
-                {
-                    icon: 'sass',
-                    link: 'string'
-                }
-            ],
-            techStack: [
-                {
-                    icon: 'sass',
-                    link: 'string'
-                }
-            ],
-            view: 800,
-            star: 100
-        }
-    ];
+    const article: IArticles[] = articles;
 
     const handleLink = (link: string | number, isOut: boolean) => {
         console.log(11111);

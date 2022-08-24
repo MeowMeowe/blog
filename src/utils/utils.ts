@@ -85,19 +85,43 @@ export const throttle = function (func: () => void, delay = 500, immediately = f
 };
 
 const isObject = (target: any) => {
-    return typeof target === 'object' || (typeof target === 'function' && target !== null);
+    return typeof target === 'object' && target !== null;
+};
+
+const copyFn = (fn: any) => {
+    const result = eval('0,' + fn);
+    console.log(fn);
+    for (const i in fn) {
+        result[i] = fn[i];
+    }
+    return result;
+};
+
+const copySymbol = (val: symbol) => {
+    const str = val.toString();
+    const tempArr = str.split('(');
+    const arr = tempArr[1].split(')')[0];
+    return Symbol(arr);
 };
 
 export const cloneDeep = (target: any, map = new Map()) => {
     if (map.get(target)) {
         return target;
     }
-
-    const constructor = target.constructor;
-    if (/^(RegExp|Date)$/i.test(constructor.name)) {
-        return new constructor(target);
+    const constructor = target?.constructor;
+    if (constructor) {
+        if (/^(RegExp|Date)$/i.test(constructor.name)) {
+            return new constructor(target);
+        }
     }
-
+    if (typeof target === 'function') {
+        map.set(target, true);
+        const cloneFn = eval('0,' + target);
+        for (const prop in target) {
+            cloneFn[prop] = cloneDeep(target[prop], map);
+        }
+        return cloneFn;
+    }
     if (isObject(target)) {
         map.set(target, true);
         const cloneTarget: any = Array.isArray(target) ? [] : {};
@@ -105,7 +129,9 @@ export const cloneDeep = (target: any, map = new Map()) => {
             cloneTarget[prop] = cloneDeep(target[prop], map);
         }
         return cloneTarget;
-    } else {
-        return target;
     }
+    if (typeof target === 'symbol') {
+        return copySymbol(target);
+    }
+    return target;
 };

@@ -13,7 +13,6 @@ interface options {
 export const Ajax = (opt: options) => {
     return new Promise(async (resolve: (value: any) => void) => {
         let param = opt.param;
-
         const defaultOption = {
             methodType: 'get',
             upload: false,

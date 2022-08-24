@@ -4,6 +4,7 @@ import Loading from '@/compontents/loading';
 import { Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
+
 if (process.env.NODE_ENV == 'production') {
     disableReactDevTools();
 }
