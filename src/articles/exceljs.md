@@ -1,17 +1,15 @@
-# excelJs简单应用
-
 ## 一、项目前提
-&emsp;&emsp;公司业务需要一个纯前端的导出excel的功能于是只能自己搞了，一通搜索研究后，大致有三种解决方案:
+&emsp;&emsp;公司业务需要一个纯前端的导出excel的功能，一通搜索研究调研后，大致有三种解决方案:
 
 1. xlxs+xlsx-style
 2. sheetJs:xlsxPro版
 3. excelJs
 
-&emsp;&emsp;本着学习一下的心态（主要刚到新公司没有活，有点无聊），把三种方案都尝试了一遍，各有优缺点：
+&emsp;&emsp;本着学习一下的心态（主要刚到新公司没有活，有点无聊），把三种方案都研究了一遍，各有优缺点：
 
-1. xlxs+xlsx-style:xlxs用来创建表，xlsx-style用来写入样式，简单易上手，代码量少，但用在vue3中xlsx-style会有bug,网上有很多解决办法，全都尝试了一遍，无果，最终放弃。
-2. sheetJs Pro:xlxs的Pro版，较社区版增加了很多功能([Pro版额外功能](https://sheetjs.com/pro))，可以说十分方便，但是需要氪金(大约$750)才能换取来这些功能，摸了摸自己扁扁的口袋，放弃了。
-2. excelJs：简单看了一下api，发现跟xlxs语法比较相似，而且简化很多，在导出方面很是方便，但解析就不太好用。正好我只需要导出功能，于是直接npm install,开始撸代码。
+1. xlxs+xlsx-style：sheetJs家推出的社区版，xlxs用来创建表，xlsx-style用来写入样式，简单易上手，代码量少，但用在vue3中xlsx-style会有bug,网上有很多解决办法，全都尝试了一遍，无果，最终放弃。
+2. sheetJs Pro：xlxs的Pro版，较社区版增加了很多功能([Pro版额外功能](https://sheetjs.com/pro))，可以说十分方便，但是这些额外的功能是某公司向sheetjs家定制开发的，所以个人或者其他企业想要使用的话，需要氪金(大约$750)才能换取来这些功能，摸了摸自己扁扁的口袋，放弃了。
+2. excelJs：简单看了一下api，发现跟xlxs语法比较相似，而且简化很多，在导出方面很是方便，但解析就比较繁琐，且提供的api较少。正好我只需要导出功能，于是直接npm install,开始撸代码。
 
 
 ### 简易导出功能函数完全体
@@ -32,10 +30,7 @@ export const exportByExcelJs = (json, tHead, fileName = '导出文件', sheetNam
   workbook.modified = new Date()
   let worksheet = workbook.addWorksheet(sheetName)
 
-  //无表头抛出错误,存在表头就设置表头，并用addRows添加我们要导出的数据
-  if (!!!tHead) {
-    throw new Error('Missing table header')
-  }
+  //设置表头，并用addRows添加我们要导出的数据
   worksheet.columns = tHead
   worksheet.addRows(json)
 
@@ -53,18 +48,10 @@ export const exportByExcelJs = (json, tHead, fileName = '导出文件', sheetNam
       wrapText: false
     },
     border: {
-      top: {
-        style: 'thin'
-      },
-      bottom: {
-        style: 'thin'
-      },
-      left: {
-        style: 'thin'
-      },
-      right: {
-        style: 'thin'
-      }
+      top: {style: 'thin'},
+      bottom: {style: 'thin'},
+      left: {style: 'thin'},
+      right: {style: 'thin'}
     },
     fill: {
       type: 'pattern',
@@ -124,6 +111,12 @@ const getColumnNameByIndex = i => {
 ```
 如果还需要其他设置，可以查看官方文档。
 ### [官方文档(中文)](https://github.com/exceljs/exceljs/blob/master/README_zh.md)
+
+### 总结
+
+&emsp;&emsp;总的来说，exceljs实现导出的方式基本覆盖了大部分导出场景，而且官方文档也有中文版，查看起来还是很方便的，有这方面需求或者有兴趣的小伙伴可以自己动手试一试。
+
+exceljs Github地址：https://github.com/exceljs/exceljs
 
 
 

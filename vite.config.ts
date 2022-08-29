@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import viteEslint from 'vite-plugin-eslint';
+import { visualizer } from 'rollup-plugin-visualizer';
 // import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 
 import path from 'path';
@@ -9,6 +10,7 @@ import path from 'path';
 export default defineConfig({
     plugins: [
         react(),
+        visualizer(),
         viteEslint({
             failOnError: false
         })
