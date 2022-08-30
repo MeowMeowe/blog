@@ -1,5 +1,5 @@
 ## 开发详细记录
-### 1. 项目搭建(2022/02/11)
+### 1. 项目搭建(2022/02/11) 
 * 使用create-react-app创建项目：
 ```
 npm install -g create-react-app
@@ -128,12 +128,80 @@ jobs: # 要执行的任务
 ### 3. 公共背景组件(2022/02/18)
 &emsp;&emsp;compontents文件夹下bg组件，主要做了全局随机背景。
 ### 4. eslint + prettier(2022/02/19)
-
+&emsp;&emsp;这里主要介绍这两个工具的配置项，分别是：
+```cjs
+//./.prettierrc.cjs
+// prettier.config.js or .prettierrc.js
+module.exports = {
+    printWidth: 100,// 一行最多 100 字符
+    tabWidth: 4, // 使用 4 个空格缩进
+    useTabs: false, // 不使用缩进符，而使用空格
+    semi: true,// 行尾需要有分号
+    singleQuote: true, // 使用单引号
+    quoteProps: 'as-needed',// 对象的 key 仅在必要时用引号
+    jsxSingleQuote: false,// jsx 不使用单引号，而使用双引号
+    trailingComma: 'none',// 末尾不需要逗号
+    bracketSpacing: true,// 大括号内的首尾需要空格
+    jsxBracketSameLine: false,// jsx 标签的反尖括号需要换行
+    arrowParens: 'always', // 箭头函数，只有一个参数的时候，也需要括号
+    rangeStart: 0,// 每个文件格式化的范围是文件的全部内容
+    rangeEnd: Infinity,
+    requirePragma: false,// 不需要写文件开头的 @prettier
+    insertPragma: false,// 不需要自动在文件开头插入 @prettier
+    proseWrap: 'preserve', // 使用默认的折行标准
+    htmlWhitespaceSensitivity: 'css',// 根据显示样式决定 html 要不要折行
+    endOfLine: 'auto'// 换行符
+};
+```
+```cjs
+//./.eslintrc.cjs
+module.exports = {
+    env: { //环境支持
+        browser: true,
+        es2021: true,
+        es6: true,
+        jest: true
+    },
+    extends: [
+        'eslint:recommended',
+        'plugin:react/recommended',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:prettier/recommended',
+        'plugin:react/jsx-runtime'
+    ],
+    parser: '@typescript-eslint/parser',
+    parserOptions: {
+        ecmaFeatures: {
+            jsx: true
+        },
+        ecmaVersion: 'latest',
+        sourceType: 'module'
+    },
+    plugins: ['react', '@typescript-eslint', 'prettier'],
+    rules: {
+        'prettier/prettier': 'error',
+        'arrow-body-style': 'off',
+        'prefer-arrow-callback': 'off',
+        'no-async-promise-executor': 'off',
+        'no-misleading-character-class': 'off',
+        'no-useless-catch': 'off',
+        'react/jsx-uses-react': 'error',
+        'react/jsx-uses-vars': 'error',
+        '@typescript-eslint/no-explicit-any': ['off'],
+        '@typescript-eslint/no-non-null-assertion': 'off'
+    },
+    settings: {
+        react: {
+            version: 'detect'
+        }
+    }
+};
+```
 ### 5. 工具函数库(2022/02/24)
 &emsp;&emsp;utils文件夹下utils文件，主要是日常开发会用到的一些工具函数，如：防抖、节流、随机数、随机颜色、深拷贝等... 会在开发过程中继续补充。
 ### 6. 公共加载组件(2022/02/28)
-&emsp;&emsp;compontents文件夹下loading组件，主要做了全局随机加载效果，我用css做出了29种不同的加载效果，导致这个scss文件比较臃肿，但最终效果不错，瑕不掩瑜。组这个组件的原因主要是由于我们使用了懒加载路由，所以要在src目录下的index.tsx中使用SSuspense标签包裹路由组件：
-```ts
+&emsp;&emsp;compontents文件夹下loading组件，主要做了全局随机加载效果，我用css做出了29种不同的加载效果，导致这个scss文件比较臃肿，但最终效果不错，瑕不掩瑜。做这个组件的原因主要是由于我们使用了懒加载路由，所以要在src目录下的index.tsx中使用SSuspense标签包裹路由组件，在加载路由的时候这个loading就会先展现出来，提升交互的流畅度：
+```tsx
 //src/index.tsx
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { disableReactDevTools } from '@/utils/utils';
@@ -163,7 +231,7 @@ if (root) {
     createRoot(root).render(<RootContainer />);
 }
 ```
-```ts
+```tsx
 //src/router/index.ts
 // 路由懒加载
 import { lazy } from 'react';
@@ -179,14 +247,17 @@ export { Home, NotFound, ToolsBox, OneWord, SmkAdmin, Articles };
 
 ```
 ### 7. 自动回顶组件(2022/03/03)
+&emsp;&emsp;compontents文件夹下scroll-bar组件,主要做了下滑超过一个视口高度显示该组件，点击后回到页面顶部，自己设计了一下效果，仍有瑕疵，还在不断优化。
 ### 8. 图片转webp(2022/03/04)
+&emsp;&emsp;背景图和icon本来想用cdn来做，但要分出来两个库，还是有些麻烦，就先用转成webp的方式来优化一下，平均能压缩80%，不会损失太多显示效果。用的是一个叫做WebpConverter的免费桌面软件可以实现jpeg/png和webp的互转。
 ### 9.  接口测试、生产环境优化(2022/03/07)
+&emsp;&emsp;接口是使用的以前学习node + express时候写的demo，改了改就先用着，只提供出来一个接口，后端这方面还要学习研究，重新捡起来。
 ### 10. 管理员入口及鉴权规划(2022/03/08)
+&emsp;&emsp;准备把文章的增删改查做到这里，之后再考虑添加其他功能。入口肯定是隐藏起来且会加上鉴权。
 ### 11. 公共导航栏组件(2022/06/14)
 ### 12. 首页组件、全局样式、滚动组件(2022/07/06)
 ### 13. 滚动组件Bug修复(2022/07/11)
 ### 14. 更换Webpack为Vite(2022/08/18)
 ### 15. 导航组件菜单自适应(2022/08/22)
 ### 16. 布局优化、文章列表组件、底部组件(2022/08/23)
-### 17. 导航组件菜单自适应(2022/08/22)
-### 18. Redux + Redux-tookit(2022/08/22)
+### 17. Redux + Redux-tookit(2022/08/24)
