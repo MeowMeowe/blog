@@ -88,15 +88,6 @@ const isObject = (target: any) => {
     return typeof target === 'object' && target !== null;
 };
 
-const copyFn = (fn: any) => {
-    const result = eval('0,' + fn);
-    console.log(fn);
-    for (const i in fn) {
-        result[i] = fn[i];
-    }
-    return result;
-};
-
 const copySymbol = (val: symbol) => {
     const str = val.toString();
     const tempArr = str.split('(');

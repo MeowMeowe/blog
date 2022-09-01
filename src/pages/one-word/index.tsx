@@ -7,8 +7,10 @@ export default function Home() {
 
     const getWord = async () => {
         const res = await getWordApi();
-        if (res.status == 0 && res.data) {
+        if (res.status == 0 && res.data.text) {
             setWord(res.data.text);
+        } else {
+            setWord('今天小脑瓜里没有情话啦，但还是比昨天多爱你一点。');
         }
     };
     useEffect(() => {
@@ -19,7 +21,7 @@ export default function Home() {
 
     return (
         <div className="one-word">
-            <p className="word"> {word || '今天没有情话，但比昨天多爱你一点。'}</p>
+            <p className="word"> {word}</p>
         </div>
     );
 }
