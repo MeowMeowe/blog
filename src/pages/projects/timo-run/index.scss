@@ -1,0 +1,60 @@
+.game {
+    background-image: url('/img/game/timo-run/bg.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    @include Container;
+    margin: 0 auto;
+    .timo {
+        width: 100px;
+        height: 100px;
+        background-image: url('/img/game/timo-run/timo.gif');
+        background-size: cover;
+        position: absolute;
+        zoom: 1;
+    }
+    .begin {
+        position: absolute;
+        bottom: 100px;
+        left: 50%;
+        transform: translate(-50%, 0);
+        font-size: 50px;
+        cursor: pointer;
+        color: #ddd;
+        user-select: none;
+        &:hover {
+            color: #fff;
+            text-shadow: 0 0 10px 10px #fff;
+        }
+    }
+    .time {
+        position: absolute;
+        top: 50px;
+        left: 50%;
+        transform: translate(-50%, 0);
+        font-size: 50px;
+        cursor: pointer;
+        color: #ddd;
+        user-select: none;
+    }
+    .missile {
+        width: 60px;
+        height: 60px;
+        cursor: pointer;
+        background-color: #ddd;
+        user-select: none;
+        border-radius: 50%;
+    }
+}
+
+@media (max-width: 768px) {
+    .game {
+        width: 100%;
+    }
+}
+
+@media (min-width: 768px) {
+    .game {
+        width: 80vw;
+    }
+}

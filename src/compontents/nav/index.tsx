@@ -1,6 +1,7 @@
 import { throttle } from '@/utils/utils';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import RouterSchemle from '@/router';
 import './index.scss';
 
 export default function Nav() {
@@ -25,7 +26,7 @@ export default function Nav() {
     };
 
     const handleResize = () => {
-        setMenuFold(window.innerWidth < 500);
+        setMenuFold(window.innerWidth < 550);
     };
 
     useEffect(() => {
@@ -39,6 +40,10 @@ export default function Nav() {
         };
     }, []);
 
+    useEffect(() => {
+        setClickMenu(false);
+    }, [menuFold]);
+
     const handleClickMenu = () => {
         setClickMenu((clickMenu) => !clickMenu);
     };
@@ -46,37 +51,40 @@ export default function Nav() {
     const renderLinks = () => {
         return (
             <>
-                <Link to="/">首页</Link>
-                <Link to="/exclusive">Miao</Link>
-                <Link to="/tools-box">工具箱</Link>
-                <Link to="/about">关于</Link>
+                {RouterSchemle.map((item) => {
+                    return (
+                        item.navShow && (
+                            <Link key={item.key} to={item.path}>
+                                {item.title}
+                            </Link>
+                        )
+                    );
+                })}
             </>
         );
     };
 
     return (
-        <>
-            <nav className={`nav-wrap ${navClass}`}>
-                <div className="logo">
-                    <img className="logo-img" src="./img/icon/cat.webp" alt="logo" />
-                    <p>MeowGod`s Blog </p>
-                </div>
-                {menuFold ? (
-                    <div className="fold-menu">
-                        <img
-                            onClick={handleClickMenu}
-                            className="fold-menu-icon"
-                            src={clickMenu ? './img/icon/down-arrow.webp' : './img/icon/menu.webp'}
-                            alt="fold-menu"
-                        />
-                        <div className={clickMenu ? 'fold-menu-links-open' : 'fold-menu-links'}>
-                            {renderLinks()}
-                        </div>
+        <nav className={`nav-wrap ${navClass}`}>
+            <div className="logo">
+                <img className="logo-img" src="/img/icon/cat.webp" alt="logo" />
+                <p>MeowGod`s Blog </p>
+            </div>
+            {menuFold ? (
+                <div className="fold-menu">
+                    <img
+                        onClick={handleClickMenu}
+                        className="fold-menu-icon"
+                        src={clickMenu ? '/img/icon/down-arrow.webp' : '/img/icon/menu.webp'}
+                        alt="fold-menu"
+                    />
+                    <div className={clickMenu ? 'fold-menu-links-open' : 'fold-menu-links'}>
+                        {renderLinks()}
                     </div>
-                ) : (
-                    <div className="links">{renderLinks()}</div>
-                )}
-            </nav>
-        </>
+                </div>
+            ) : (
+                <div className="links">{renderLinks()}</div>
+            )}
+        </nav>
     );
 }

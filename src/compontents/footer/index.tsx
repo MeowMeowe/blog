@@ -6,7 +6,7 @@ export default function Footer() {
         return logoArr.map((v) => {
             return (
                 <div className="logos-items" key={v} title={v}>
-                    <img className="logos-icon" src={`./img/icon/${v}.webp`} alt={v} />
+                    <img className="logos-icon" src={`/img/icon/${v}.webp`} alt={v} />
                 </div>
             );
         });
@@ -14,7 +14,7 @@ export default function Footer() {
 
     return (
         <div className="footer">
-            <img className="footer-logo" src="./img/icon/cat.webp" alt="logo" />
+            <img className="footer-logo" src="/img/icon/cat.webp" alt="logo" />
             <p className="">人生中最艰难的是选择</p>
             <div className="logos">{renderLogos()}</div>
             <p>Designed & Powerd by MeowGod </p>

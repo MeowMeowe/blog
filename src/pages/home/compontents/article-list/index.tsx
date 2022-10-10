@@ -44,7 +44,7 @@ export default function ArticleList() {
                 >
                     <img
                         className={`${className}-icon`}
-                        src={`./img/icon/${item.icon}.webp`}
+                        src={`/img/icon/${item.icon}.webp`}
                         alt=""
                     />
                 </div>
@@ -60,14 +60,14 @@ export default function ArticleList() {
                         <div className="articles-flex-items" key={item.id}>
                             <img
                                 className="title-icon"
-                                src={`./img/icon/${item.icon}.webp`}
+                                src={`/img/icon/${item.icon}.webp`}
                                 alt=""
                             />
 
                             <h1 className="title">{item.title}</h1>
                             <img
                                 className="cover"
-                                src={`./img/bg/${randomNumber(1, 6, 0)}.webp`}
+                                src={`/img/bg/${randomNumber(1, 6, 0)}.webp`}
                                 alt=""
                                 onClick={() => handleLink(item.id, false)}
                             />
@@ -86,7 +86,7 @@ export default function ArticleList() {
                                 <div className="time msgs-item-wrap">
                                     <img
                                         className="msgs-item-icon"
-                                        src="./img/icon/clock.webp"
+                                        src="/img/icon/clock.webp"
                                         alt="Time"
                                     />
                                     <span>{item.time}</span>
@@ -94,7 +94,7 @@ export default function ArticleList() {
                                 <div className="views msgs-item-wrap">
                                     <img
                                         className="msgs-item-icon"
-                                        src="./img/icon/search.webp"
+                                        src="/img/icon/search.webp"
                                         alt="View"
                                     />
                                     <span>{item.view}</span>
@@ -102,7 +102,7 @@ export default function ArticleList() {
                                 <div className="stars msgs-item-wrap">
                                     <img
                                         className="msgs-item-icon"
-                                        src="./img/icon/love.webp"
+                                        src="/img/icon/love.webp"
                                         alt="Love"
                                     />
                                     <span>{item.star}</span>

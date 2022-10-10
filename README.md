@@ -44,6 +44,7 @@
 16. 布局优化、文章列表组件、底部组件(2022/08/23) :white_check_mark:
 17. 导航组件菜单自适应(2022/08/22) :white_check_mark:
 18. Redux + Redux-tookit(2022/08/22) :white_check_mark:
+19. 路由和菜单优化，新增学习页和项目页(2022/10/10) :white_check_mark:
 
 ### 服务器&emsp;&emsp;
 [服务器开发记录]()
