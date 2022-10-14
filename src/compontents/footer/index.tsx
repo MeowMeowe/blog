@@ -18,7 +18,9 @@ export default function Footer() {
             <p className="">人生中最艰难的是选择</p>
             <div className="logos">{renderLogos()}</div>
             <p>Designed & Powerd by MeowGod </p>
-            <p>&copy; 2022 · 豫ICP备2022003917号</p>
+            <p>
+                &copy; 2022 · <a href="https://beian.miit.gov.cn">豫ICP备2022003917号</a>
+            </p>
         </div>
     );
 }
