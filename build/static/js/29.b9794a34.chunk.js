@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkmy_app=self.webpackChunkmy_app||[]).push([[29],{3029:function(n,u,e){e.r(u),e.d(u,{default:function(){return t}});e(2791);var s=e(184);function t(){return(0,s.jsx)("div",{className:"tools-box"})}}}]);
+//# sourceMappingURL=29.b9794a34.chunk.js.map
