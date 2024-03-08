@@ -3,7 +3,7 @@ import ScrollBar from '@/compontents/scroll-bar';
 import Footer from '@/compontents/footer';
 import Container from '@/layout/container';
 
-export const renderLayout = () => {
+export default function Layout() {
     const path: string = location.pathname;
     if (/admin/.test(path)) {
         return <Container />;
@@ -17,4 +17,4 @@ export const renderLayout = () => {
             </>
         );
     }
-};
+}
