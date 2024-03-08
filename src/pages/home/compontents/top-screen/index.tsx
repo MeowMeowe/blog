@@ -11,7 +11,7 @@ export default function FirstSight() {
 
     return (
         <div className="top-screen">
-            <h1 className="top-screen-title">静水深流.</h1>
+            <h1 className="top-screen-title">MEOW MEOW.</h1>
             <p className="top-screen-line" />
             <p className="top-screen-dec">这里是MeowGod的个人主页</p>
             <div className="top-screen-guide">

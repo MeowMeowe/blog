@@ -21,7 +21,6 @@ const RootContainer = () => {
         </BrowserRouter>
     );
 };
-const root = document.getElementById('root');
-if (root) {
-    createRoot(root).render(<RootContainer />);
-}
+const root = createRoot(document.getElementById('root')!);
+
+root.render(<RootContainer />);
