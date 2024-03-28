@@ -262,3 +262,5 @@ export { Home, NotFound, ToolsBox, OneWord, SmkAdmin, Articles };
 ### 16. 布局优化、文章列表组件、底部组件(2022/08/23)
 ### 17. Redux + Redux-tookit(2022/08/24)
 ### 19. 路由和菜单优化，新增学习页和项目页(2022/10/10) 
+### 20. 新增主题选择(2022/10/10) 
+&emsp;&emsp;暂定白和黑切换，后续再考虑其他配色

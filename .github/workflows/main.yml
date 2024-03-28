@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest   # 使用ubuntu系统镜像运行自动化脚本(温馨提示：和你所使用的操作系统及服务器系统无关，我本地用的windows10,云服务器用的centos)
     strategy:
       matrix:
-        node-version: [16.x] # 配置所需node版本
+        node-version: [19.x] # 配置所需node版本
     steps:  # 自动化步骤
     - uses: actions/checkout@v2   # 第一步，检出仓库副本
 
@@ -30,7 +30,7 @@ jobs:
       run: npm run build --if-present
 
     - name: Deploy to Server      # 第四步，rsync推送文件
-      uses: AEnterprise/rsync-deploy@v1.0  # 使用别人包装好的步骤镜像
+      uses: AEnterprise/rsync-deploy@v1.0.2 # 使用别人包装好的步骤镜像
       env:
         DEPLOY_KEY: ${{ secrets.TENTCENT_BLOG }}   # 引用配置，SSH私钥
         ARGS: -avz --delete --exclude='*.pyc'   # rsync参数，排除.pyc文件
