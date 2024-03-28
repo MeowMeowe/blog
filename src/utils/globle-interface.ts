@@ -16,7 +16,7 @@ export type IResponse<T> = {
     /*
      *  状态码
      */
-    status?: number;
+    code?: number;
     /*
      *  返回信息
      */

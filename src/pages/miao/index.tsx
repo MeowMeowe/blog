@@ -7,7 +7,7 @@ export default function Home() {
 
     const getWord = async () => {
         const res = await getWordApi();
-        if (res.status == 0 && res.data.text) {
+        if (res.code == 200 && res.data.text) {
             setWord(res.data.text);
         } else {
             setWord('今天小脑瓜里没有情话啦，但还是比昨天多爱你一点。');

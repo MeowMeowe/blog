@@ -65,26 +65,28 @@ export default function Nav() {
     };
 
     return (
-        <nav className={`nav-wrap ${navClass}`}>
-            <div className="logo">
-                <img className="logo-img" src="/img/icon/cat.webp" alt="logo" />
-                <p>MeowGod`s Blog </p>
-            </div>
-            {menuFold ? (
-                <div className="fold-menu">
-                    <img
-                        onClick={handleClickMenu}
-                        className="fold-menu-icon"
-                        src={clickMenu ? '/img/icon/down-arrow.webp' : '/img/icon/menu.webp'}
-                        alt="fold-menu"
-                    />
-                    <div className={clickMenu ? 'fold-menu-links-open' : 'fold-menu-links'}>
-                        {renderLinks()}
-                    </div>
+        <header>
+            <nav className={`nav-wrap ${navClass}`}>
+                <div className="logo">
+                    <img className="logo-img" src="/img/icon/cat.webp" alt="logo" />
+                    <p>MeowGod`s Blog </p>
                 </div>
-            ) : (
-                <div className="links">{renderLinks()}</div>
-            )}
-        </nav>
+                {menuFold ? (
+                    <div className="fold-menu">
+                        <img
+                            onClick={handleClickMenu}
+                            className="fold-menu-icon"
+                            src={clickMenu ? '/img/icon/down-arrow.webp' : '/img/icon/menu.webp'}
+                            alt="fold-menu"
+                        />
+                        <div className={clickMenu ? 'fold-menu-links-open' : 'fold-menu-links'}>
+                            {renderLinks()}
+                        </div>
+                    </div>
+                ) : (
+                    <div className="links">{renderLinks()}</div>
+                )}
+            </nav>
+        </header>
     );
 }

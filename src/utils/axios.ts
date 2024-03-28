@@ -32,7 +32,7 @@ export const Ajax = (opt: options) => {
             const res = await axios({
                 method: opt.methodType,
                 timeout: opt.timeout ? opt.timeout : 10000,
-                url: 'https://meowgod.com' + opt.url,
+                url: '/api' + opt.url,
                 data: param,
                 headers: opt.headers
             });

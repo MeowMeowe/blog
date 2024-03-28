@@ -1,6 +1,5 @@
 import Nav from '@/compontents/nav';
-import Bg from '@/compontents/bg';
-import ScrollBar from '@/compontents/scroll-bar';
+import Exterior from '@/compontents/exterior';
 import Footer from '@/compontents/footer';
 import Container from '@/layout/container';
 
@@ -9,16 +8,15 @@ export const renderLayout = () => {
     if (/admin/.test(path)) {
         return (
             <>
-                <Bg />
+                <Exterior showScroll={false} />
                 <Container />
             </>
         );
     } else {
         return (
             <>
-                <Bg />
+                <Exterior />
                 <Nav />
-                <ScrollBar />
                 <Container />
                 <Footer />
             </>

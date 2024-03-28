@@ -13,14 +13,14 @@ export default function Footer() {
     };
 
     return (
-        <div className="footer">
-            <img className="footer-logo" src="/img/icon/cat.webp" alt="logo" />
-            <p className="">人生中最艰难的是选择</p>
+        <footer>
+            <img className="logo" src="/img/icon/cat.webp" alt="logo" />
+            <p className="tips">人生中最艰难的是选择</p>
             <div className="logos">{renderLogos()}</div>
             <p>Designed & Powerd by MeowGod </p>
             <p>
                 &copy; 2022 · <a href="https://beian.miit.gov.cn">豫ICP备2022003917号</a>
             </p>
-        </div>
+        </footer>
     );
 }
