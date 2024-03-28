@@ -67,13 +67,13 @@
             animation-delay: 2s;
         }
     }
-    .top-icon-hide {
+    .top-icon-false {
         transition: all 0.5s;
         transition-delay: 0.05s;
         transition-timing-function: ease-in;
         right: -40px;
     }
-    .top-icon-show {
+    .top-icon-true {
         transition: all 0.5s;
         transition-delay: 0.05s;
         transition-timing-function: ease-in;
@@ -93,13 +93,13 @@
         transform: rotateZ(-45deg);
         z-index: 3;
     }
-    .heart-icon-show {
+    .heart-icon-true {
         transition: right 0.5s;
         transition-delay: 0.05s;
         transition-timing-function: ease-in;
         right: 12.5px;
     }
-    .heart-icon-hide {
+    .heart-icon-false {
         transition: right 1s;
         transition-delay: 0.5s;
         transition-timing-function: ease-in;
@@ -117,7 +117,7 @@
         z-index: 3;
     }
 
-    .arror-icon {
+    .arrow-icon {
         width: 25px;
         height: 25px;
         position: fixed;
@@ -127,7 +127,8 @@
         z-index: 2;
     }
 
-    .arror-icon-show {
+    .arrow-icon-true {
+        opacity: 1;
         animation: xiu 0.85s ease-out 0s 1;
     }
 }

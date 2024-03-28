@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import './index.scss';
+import LazyImage from '@/compontents/lazy-image';
 
 export default function Game() {
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ export default function Game() {
                         key={item.gameName}
                         onClick={() => handleJumpToGame(item.link)}
                     >
-                        <img className="game-items-icon" src={item.icon} alt="gamelogo" />
+                        <LazyImage className="game-items-icon" src={item.icon} alt="gamelogo" />
                         <p className="game-items-name">{item.gameName}</p>
                     </div>
                 );

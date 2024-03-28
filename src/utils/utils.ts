@@ -1,55 +1,48 @@
-export const LoadJs = (url: string, callback?: any): void => {
-    const domScript: any = document.createElement('script');
+interface LoadJsOptions {
+    callback?: () => void;
+}
+
+export const LoadJs = (url: string, { callback }: LoadJsOptions = {}): void => {
+    const domScript = document.createElement('script');
     domScript.src = url;
-    const success =
-        callback ||
-        function () {
-            //空函数
-        };
-    domScript.onload = domScript.onreadystatechange = function () {
-        if (!this.readyState || this.readyState === 'loaded' || this.readyState === 'complete') {
-            success();
-            this.onload = this.onreadystatechange = null;
-            this.parentNode.removeChild(this);
-        }
+    const success = callback || (() => {});
+    domScript.onload = function () {
+        success();
     };
     document.getElementsByTagName('head')[0].appendChild(domScript);
 };
 
-export const randomNumber = (min: number, max: number, float: number): string => {
+export const randomNumber = (min: number, max: number, float = 0): string => {
+    // 移除了显式的类型注释
     return Math.floor(Math.random() * (max - min + 1) + min).toFixed(float);
 };
 
 export const randomColor = (): string => {
-    return (
-        'rgb(' +
-        ~~(Math.random() * 255) +
-        ',' +
-        ~~(Math.random() * 255) +
-        ',' +
-        ~~(Math.random() * 255) +
-        ')'
-    );
+    return `rgb(${~~(Math.random() * 255)},${~~(Math.random() * 255)},${~~(Math.random() * 255)})`;
 };
 
 export const disableReactDevTools = (): void => {
-    const noop = (): void => undefined;
+    const noop = (): void => {};
     const DEV_TOOLS = (window as any).__REACT_DEVTOOLS_GLOBAL_HOOK__;
 
     if (typeof DEV_TOOLS === 'object') {
-        for (const [key, value] of (<any>Object).entries(DEV_TOOLS)) {
+        for (const [key, value] of Object.entries(DEV_TOOLS)) {
             DEV_TOOLS[key] = typeof value === 'function' ? noop : null;
         }
     }
 };
 
-export const debounce = (func: () => void, delay = 500, immediately = false) => {
-    let timer: null | ReturnType<typeof setTimeout> = null;
-    return function (this: any, ...args: any) {
+export const debounce = <T extends (...args: any[]) => void>(
+    func: T,
+    delay = 500,
+    immediately = false
+): ReturnType<T> => {
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    return function (this: any, ...args: Parameters<T>) {
         if (timer) clearTimeout(timer);
         if (immediately) {
-            const callNow = !timer; // 根据当前的定时器信息来决定要不要立即执行
-            timer = setTimeout(function () {
+            const callNow = !timer;
+            timer = setTimeout(() => {
                 timer = null;
             }, delay);
             if (callNow) {
@@ -60,12 +53,16 @@ export const debounce = (func: () => void, delay = 500, immediately = false) => 
                 func.apply(this, args);
             }, delay);
         }
-    };
+    } as ReturnType<T>;
 };
 
-export const throttle = function (func: () => void, delay = 500, immediately = false) {
-    let timer: null | ReturnType<typeof setTimeout> = null;
-    return function (this: any, ...args: any) {
+export const throttle = <T extends (...args: any[]) => void>(
+    func: T,
+    delay = 500,
+    immediately = false
+): ReturnType<T> => {
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    return function (this: any, ...args: Parameters<T>) {
         if (immediately) {
             func.apply(this, args);
             immediately = false;
@@ -81,48 +78,42 @@ export const throttle = function (func: () => void, delay = 500, immediately = f
                 timer = null;
             }, delay);
         }
-    };
+    } as ReturnType<T>;
 };
 
-const isObject = (target: any) => {
-    return typeof target === 'object' && target !== null;
-};
+const copySymbol = (val: symbol) => Symbol(val.description);
 
-const copySymbol = (val: symbol) => {
-    const str = val.toString();
-    const tempArr = str.split('(');
-    const arr = tempArr[1].split(')')[0];
-    return Symbol(arr);
-};
-
-export const cloneDeep = (target: any, map = new Map()) => {
-    if (map.get(target)) {
+export const cloneDeep = <T>(target: T, map = new Map()): any => {
+    if (map.has(target)) {
         return target;
     }
-    const constructor = target?.constructor;
-    if (constructor) {
-        if (/^(RegExp|Date)$/i.test(constructor.name)) {
-            return new constructor(target);
-        }
+
+    if (typeof target !== 'object' || target === null) {
+        return target;
     }
+
+    if (target instanceof RegExp) {
+        return new RegExp(target);
+    }
+
+    if (target instanceof Date) {
+        return new Date(target.getTime()) as any;
+    }
+
     if (typeof target === 'function') {
-        map.set(target, true);
-        const cloneFn = eval('0,' + target);
-        for (const prop in target) {
-            cloneFn[prop] = cloneDeep(target[prop], map);
-        }
-        return cloneFn;
+        return target;
     }
-    if (isObject(target)) {
-        map.set(target, true);
-        const cloneTarget: any = Array.isArray(target) ? [] : {};
-        for (const prop in target) {
-            cloneTarget[prop] = cloneDeep(target[prop], map);
-        }
-        return cloneTarget;
-    }
+
     if (typeof target === 'symbol') {
         return copySymbol(target);
     }
-    return target;
+
+    const cloneTarget: any = Array.isArray(target) ? [] : {};
+    map.set(target, cloneTarget);
+    for (const key in target) {
+        if (Object.prototype.hasOwnProperty.call(target, key)) {
+            cloneTarget[key] = cloneDeep(target[key], map);
+        }
+    }
+    return cloneTarget;
 };

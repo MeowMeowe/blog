@@ -1,63 +1,98 @@
 import qs from 'qs';
-import axios from 'axios';
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { IResponse } from './globle-interface';
 
-interface options {
-    methodType: 'get' | 'post';
-    timeout?: number;
-    url: string;
-    param?: any;
-    headers?: any;
+interface Options extends AxiosRequestConfig {
+    methodType: 'get' | 'post' | 'put' | 'delete' | 'patch' | 'head' | 'options'; // 添加其他 RESTful 请求方法
 }
 
-export const Ajax = (opt: options) => {
-    return new Promise(async (resolve: (value: any) => void) => {
-        let param = opt.param;
-        const defaultOption = {
-            methodType: 'get',
-            upload: false,
-            timeout: 6000,
-            headers: {},
-            url: ''
-        };
-        opt = Object.assign({}, defaultOption, opt);
+export const ajax = async <T>(options: Options): Promise<IResponse<T>> => {
+    const defaultOptions: Options = {
+        methodType: 'get',
+        timeout: 6000,
+        headers: {},
+        url: ''
+    };
+    const mergedOptions = { ...defaultOptions, ...options };
 
-        if (opt.headers) {
-            if (opt.headers['Content-Type'] == 'application/x-www-form-urlencoded') {
-                param = qs.stringify(opt.param);
-            }
-        }
+    if (
+        mergedOptions.headers &&
+        mergedOptions.headers['Content-Type'] === 'application/x-www-form-urlencoded'
+    ) {
+        mergedOptions.data = qs.stringify(mergedOptions.data);
+    }
 
-        try {
-            const res = await axios({
-                method: opt.methodType,
-                timeout: opt.timeout ? opt.timeout : 10000,
-                url: '/api' + opt.url,
-                data: param,
-                headers: opt.headers
-            });
+    try {
+        const response: AxiosResponse = await axios({
+            method: mergedOptions.methodType,
+            timeout: mergedOptions.timeout,
+            url: '/api' + mergedOptions.url,
+            data: mergedOptions.data,
+            headers: mergedOptions.headers
+        });
 
-            resolve({ ...res.data, ...res.headers } || res);
-        } catch (err) {
-            resolve(err);
-        }
-    });
+        return response.data as IResponse<T>;
+    } catch (error) {
+        return { error } as IResponse<T>;
+    }
 };
 
-export const get = <T>(url: string, params: any, opts?: any): Promise<IResponse<T>> => {
-    return Ajax({
-        url: url,
+export const get = <T>(url: string, params?: any, opts?: Options): Promise<IResponse<T>> => {
+    return ajax<T>({
         methodType: 'get',
-        param: { ...params },
+        url,
+        params,
         ...opts
     });
 };
 
-export const post = <T>(url: string, params: any, opts?: any): Promise<IResponse<T>> => {
-    return Ajax({
-        url: url,
+export const post = <T>(url: string, data?: any, opts?: Options): Promise<IResponse<T>> => {
+    return ajax<T>({
         methodType: 'post',
-        param: { ...params },
+        url,
+        data,
+        ...opts
+    });
+};
+
+export const put = <T>(url: string, data?: any, opts?: Options): Promise<IResponse<T>> => {
+    return ajax<T>({
+        methodType: 'put',
+        url,
+        data,
+        ...opts
+    });
+};
+
+export const del = <T>(url: string, opts?: Options): Promise<IResponse<T>> => {
+    return ajax<T>({
+        methodType: 'delete',
+        url,
+        ...opts
+    });
+};
+
+export const patch = <T>(url: string, data?: any, opts?: Options): Promise<IResponse<T>> => {
+    return ajax<T>({
+        methodType: 'patch',
+        url,
+        data,
+        ...opts
+    });
+};
+
+export const head = <T>(url: string, opts?: Options): Promise<IResponse<T>> => {
+    return ajax<T>({
+        methodType: 'head',
+        url,
+        ...opts
+    });
+};
+
+export const options = <T>(url: string, opts?: Options): Promise<IResponse<T>> => {
+    return ajax<T>({
+        methodType: 'options',
+        url,
         ...opts
     });
 };

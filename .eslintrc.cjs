@@ -31,7 +31,8 @@ module.exports = {
         'react/jsx-uses-react': 'error',
         'react/jsx-uses-vars': 'error',
         '@typescript-eslint/no-explicit-any': ['off'],
-        '@typescript-eslint/no-non-null-assertion': 'off'
+        '@typescript-eslint/no-non-null-assertion': 'off',
+        '@typescript-eslint/no-empty-function': 'off'
     },
     settings: {
         react: {

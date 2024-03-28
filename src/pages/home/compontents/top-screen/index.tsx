@@ -1,9 +1,9 @@
 import React from 'react';
 import './index.scss';
 
-export default function FirstSight() {
+const FirstSight: React.FC = () => {
     const jumpToNextPage = () => {
-        scrollTo({
+        window.scrollTo({
             top: window.innerHeight,
             behavior: 'smooth'
         });
@@ -24,4 +24,6 @@ export default function FirstSight() {
             </div>
         </div>
     );
-}
+};
+
+export default FirstSight;

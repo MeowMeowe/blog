@@ -1,77 +1,51 @@
-interface StorageUtil {
-    // localStorage
-    setLocalStorage<T>(key: string, value: T): void;
-    getLocalStorage<T>(key: string): T | null;
-    removeLocalStorage(key: string): void;
-
-    // sessionStorage
-    setSessionStorage<T>(key: string, value: T): void;
-    getSessionStorage<T>(key: string): T | null;
-    removeSessionStorage(key: string): void;
-
-    // cookie
-    setCookie(name: string, value: string, days?: number): void;
-    getCookie(name: string): string | null;
-    removeCookie(name: string): void;
+interface StorageUtil<T> {
+    set(key: string, value: T): void;
+    get(key: string): T | null;
+    remove(key: string): void;
 }
 
-const storageUtil: StorageUtil = {
-    // localStorage
-    setLocalStorage: <T>(key: string, value: T): void => {
+const createStorageUtil = <T extends string>(storage: Storage): StorageUtil<T> => ({
+    set: (key: string, value: T): void => {
         try {
-            localStorage.setItem(key, JSON.stringify(value));
+            storage.setItem(key, JSON.stringify(value));
         } catch (error) {
-            console.error('Error setting localStorage:', error);
+            console.error(
+                `Error setting ${storage === localStorage ? 'localStorage' : 'sessionStorage'}:`,
+                error
+            );
         }
     },
 
-    getLocalStorage: <T>(key: string): T | null => {
+    get: (key: string): T | null => {
         try {
-            const value = localStorage.getItem(key);
+            const value = storage.getItem(key);
             return value ? JSON.parse(value) : null;
         } catch (error) {
-            console.error('Error getting localStorage:', error);
+            console.error(
+                `Error getting ${storage === localStorage ? 'localStorage' : 'sessionStorage'}:`,
+                error
+            );
             return null;
         }
     },
 
-    removeLocalStorage: (key: string): void => {
+    remove: (key: string): void => {
         try {
-            localStorage.removeItem(key);
+            storage.removeItem(key);
         } catch (error) {
-            console.error('Error removing localStorage:', error);
+            console.error(
+                `Error removing ${storage === localStorage ? 'localStorage' : 'sessionStorage'}:`,
+                error
+            );
         }
-    },
+    }
+});
 
-    // sessionStorage
-    setSessionStorage: <T>(key: string, value: T): void => {
-        try {
-            sessionStorage.setItem(key, JSON.stringify(value));
-        } catch (error) {
-            console.error('Error setting sessionStorage:', error);
-        }
-    },
+const localStorageUtil: StorageUtil<string> = createStorageUtil(localStorage);
+const sessionStorageUtil: StorageUtil<string> = createStorageUtil(sessionStorage);
 
-    getSessionStorage: <T>(key: string): T | null => {
-        try {
-            const value = sessionStorage.getItem(key);
-            return value ? JSON.parse(value) : null;
-        } catch (error) {
-            console.error('Error getting sessionStorage:', error);
-            return null;
-        }
-    },
-
-    removeSessionStorage: (key: string): void => {
-        try {
-            sessionStorage.removeItem(key);
-        } catch (error) {
-            console.error('Error removing sessionStorage:', error);
-        }
-    },
-
-    // cookie
-    setCookie: (name: string, value: string, days = 365): void => {
+const cookieUtil: StorageUtil<string> = {
+    set: (name: string, value: string, days = 365): void => {
         const expirationDate = new Date();
         expirationDate.setDate(expirationDate.getDate() + days);
 
@@ -80,15 +54,15 @@ const storageUtil: StorageUtil = {
         )}; expires=${expirationDate.toUTCString()}; path=/`;
     },
 
-    getCookie: (name: string): string | null => {
+    get: (name: string): string | null => {
         const cookieValue = document.cookie.split('; ').find((row) => row.startsWith(`${name}=`));
 
         return cookieValue ? decodeURIComponent(cookieValue.split('=')[1]) : null;
     },
 
-    removeCookie: (name: string): void => {
+    remove: (name: string): void => {
         document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
     }
 };
 
-export default storageUtil;
+export { localStorageUtil, sessionStorageUtil, cookieUtil };

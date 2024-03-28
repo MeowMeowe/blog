@@ -1,14 +1,15 @@
-import FirstSight from './compontents/top-screen';
-import ArticleList from './compontents/article-list';
-// import { increment, asyncIncrement, decrement } from '@/store/slices/counte.slice';
-// import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import React from 'react';
+import FirstSight from './compontents/top-screen'; // Adjust the path if necessary
+import ArticleList from './compontents/article-list'; // Adjust the path if necessary
 import './index.scss';
 
-export default function Home() {
+const Home: React.FC = () => {
     return (
         <div className="home">
             <FirstSight />
             <ArticleList />
         </div>
     );
-}
+};
+
+export default Home;

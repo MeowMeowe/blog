@@ -4,23 +4,29 @@ import { Link } from 'react-router-dom';
 import RouterSchemle from '@/router';
 import './index.scss';
 
-export default function Nav() {
-    const [navClass, setNavClass] = useState('');
-    const [menuFold, setMenuFold] = useState(window.innerWidth < 500);
-    const [clickMenu, setClickMenu] = useState(false);
+interface NavItem {
+    key: string;
+    title: string;
+    path: string;
+    navShow: boolean;
+}
+
+const Nav: React.FC = () => {
+    const [navClass, setNavClass] = useState<string>('');
+    const [menuFold, setMenuFold] = useState<boolean>(window.innerWidth < 500);
+    const [clickMenu, setClickMenu] = useState<boolean>(false);
 
     const handleScroll = () => {
-        if (scrollY >= 66) {
+        if (window.scrollY >= 66) {
             setNavClass('fix-top');
         } else {
             setNavClass('');
         }
     };
-    const hanbleDomClick = (e: any) => {
-        if (
-            e.target.className !== 'fold-menu-icon' &&
-            e.target.className !== 'fold-menu-links-open'
-        ) {
+
+    const handleDomClick = (e: MouseEvent) => {
+        const target = e.target as HTMLElement;
+        if (target.className !== 'fold-menu-icon' && target.className !== 'fold-menu-links-open') {
             setClickMenu(false);
         }
     };
@@ -31,12 +37,12 @@ export default function Nav() {
 
     useEffect(() => {
         document.addEventListener('scroll', handleScroll);
-        document.addEventListener('click', hanbleDomClick);
-        window.onresize = throttle(handleResize, 100);
+        document.addEventListener('click', handleDomClick);
+        window.addEventListener('resize', throttle(handleResize, 100));
         return () => {
             document.removeEventListener('scroll', handleScroll);
-            document.removeEventListener('click', hanbleDomClick);
-            window.onresize = null;
+            document.removeEventListener('click', handleDomClick);
+            window.removeEventListener('resize', throttle(handleResize, 100));
         };
     }, []);
 
@@ -45,23 +51,17 @@ export default function Nav() {
     }, [menuFold]);
 
     const handleClickMenu = () => {
-        setClickMenu((clickMenu) => !clickMenu);
+        setClickMenu((prevClickMenu) => !prevClickMenu);
     };
 
     const renderLinks = () => {
-        return (
-            <>
-                {RouterSchemle.map((item) => {
-                    return (
-                        item.navShow && (
-                            <Link key={item.key} to={item.path}>
-                                {item.title}
-                            </Link>
-                        )
-                    );
-                })}
-            </>
-        );
+        return RouterSchemle.map((item: NavItem) => {
+            return item.navShow ? (
+                <Link key={item.key} to={item.path}>
+                    {item.title}
+                </Link>
+            ) : null;
+        });
     };
 
     return (
@@ -74,8 +74,8 @@ export default function Nav() {
                 {menuFold ? (
                     <div className="fold-menu">
                         <img
-                            onClick={handleClickMenu}
                             className="fold-menu-icon"
+                            onClick={handleClickMenu}
                             src={clickMenu ? '/img/icon/down-arrow.webp' : '/img/icon/menu.webp'}
                             alt="fold-menu"
                         />
@@ -89,4 +89,6 @@ export default function Nav() {
             </nav>
         </header>
     );
-}
+};
+
+export default Nav;

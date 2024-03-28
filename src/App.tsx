@@ -1,11 +1,10 @@
-import Layout from './layout/layout';
-import '@/assets/style/base.scss';
-import './App.scss';
+import React from 'react';
 import { Provider } from 'react-redux';
+import Layout from './layout/layout';
 import store from './store';
+import './App.scss';
 
 export default function App() {
-    console.log('app render');
     return (
         <Provider store={store}>
             <Layout />

@@ -1,73 +1,76 @@
 import { randomNumber } from '@/utils/utils';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import LazyImage from '../lazy-image';
 import './index.scss';
 
-Exterior.propTypes = {
-    showScroll: Boolean
-};
+interface ExteriorProps {
+    showScroll?: boolean;
+}
 
-export default function Exterior({ showScroll = true }) {
-    const [isTopShow, setIsTopShow] = useState('');
-    const [isHeartShow, setIsHeartShow] = useState('');
-    const [isArrorShow, setIsArrorShow] = useState('');
-    const [clickToTop, setClickToTop] = useState(false);
+const Exterior: React.FC<ExteriorProps> = ({ showScroll = true }) => {
+    const [isTopShow, setIsTopShow] = useState<boolean>(false);
+    const [isHeartShow, setIsHeartShow] = useState<boolean>(false);
+    const [isArrowShow, setIsArrowShow] = useState<boolean>(false);
+    const [clickToTop, setClickToTop] = useState<boolean>(false);
+    const imgNumRef = useRef<string>(randomNumber(1, 6, 0));
 
     const handleScroll = () => {
-        if (scrollY == 0) {
+        if (window.scrollY === 0) {
             if (clickToTop) {
-                setIsHeartShow('hide');
+                setIsHeartShow(false);
             }
-            setIsTopShow('hide');
-            setIsArrorShow('');
-            setClickToTop(() => false);
+            setIsTopShow(false);
+            setIsArrowShow(false);
+            setClickToTop(false);
         }
-        if (scrollY >= window.innerHeight - 66) {
-            setIsTopShow('show');
-            setIsHeartShow('show');
+        if (window.scrollY >= window.innerHeight - 66) {
+            setIsTopShow(true);
+            setIsHeartShow(true);
         }
     };
 
     const scrollToTop = () => {
-        setClickToTop(() => true);
-        scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-        setIsArrorShow('show');
+        setClickToTop(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        setIsArrowShow(true);
     };
 
     useEffect(() => {
         document.addEventListener('scroll', handleScroll);
         return () => document.removeEventListener('scroll', handleScroll);
-    });
+    }, []);
 
     return (
         <div className="exterior">
             {/* 全局背景 */}
             <div className="bg">
-                <img className="bg-img" src={`/img/bg/${randomNumber(1, 6, 0)}.webp`} alt="bg" />
+                <img className="bg-img" src={`/img/bg/${imgNumRef.current}.webp`} alt="bg" />
             </div>
             {/* 滚动 */}
-            {showScroll ? (
+            {showScroll && (
                 <div className="scroll-bar">
                     <div className={`top-icon-wrap top-icon-${isTopShow}`} onClick={scrollToTop}>
-                        <img className="top-icon" src="/img/icon/cupid.webp" alt="go-top" />
+                        <LazyImage className="top-icon" src="/img/icon/cupid.webp" alt="go-top" />
                     </div>
-                    <img
+                    <LazyImage
                         className={`${
-                            isTopShow == 'show' ? 'heart-icon' : 'heart-arrow-icon'
+                            isTopShow ? 'heart-icon' : 'heart-arrow-icon'
                         } heart-icon-${isHeartShow}`}
-                        src={`/img/icon/${isHeartShow == 'show' ? 'target' : 'cupid-1'}.webp`}
+                        src={`/img/icon/${isHeartShow ? 'target' : 'cupid-1'}.webp`}
                         alt="heart"
                     />
-                    <img
-                        className={`arror-icon arror-icon-${isArrorShow}`}
-                        src="/img/icon/cupid-2.webp"
-                        style={{ top: window.innerHeight - 136 + 'px' }}
-                        alt="arror"
-                    />
+                    {isArrowShow && (
+                        <LazyImage
+                            className={`arrow-icon arrow-icon-${isArrowShow}`}
+                            src="/img/icon/cupid-2.webp"
+                            style={{ top: window.innerHeight - 136 + 'px' }}
+                            alt="arrow"
+                        />
+                    )}
                 </div>
-            ) : null}
+            )}
         </div>
     );
-}
+};
+
+export default Exterior;
