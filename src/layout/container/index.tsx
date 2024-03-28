@@ -2,7 +2,6 @@ import { Route, Routes } from 'react-router-dom';
 import { Suspense } from 'react';
 import Loading from '@/compontents/loading';
 import RouterSchemle from '@/router';
-import Bg from '@/compontents/bg';
 import './index.scss';
 
 export default function Container() {
@@ -15,7 +14,6 @@ export default function Container() {
                     })}
                 </Routes>
             </Suspense>
-            <Bg />
         </div>
     );
 }
