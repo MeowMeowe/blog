@@ -1,6 +1,7 @@
 import qs from 'qs';
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { IResponse } from './globle-interface';
+import './interceptors';
 
 interface Options extends AxiosRequestConfig {
     methodType: 'get' | 'post' | 'put' | 'delete' | 'patch' | 'head' | 'options'; // 添加其他 RESTful 请求方法

@@ -1,6 +1,6 @@
 import React from 'react';
 import './index.scss';
-
-export default function AdminContainer() {
+const AdminContainer: React.FC = () => {
     return <div className="admin-container">AdminContainer</div>;
-}
+};
+export default AdminContainer;

@@ -2,7 +2,7 @@ import React from 'react';
 import LazyImage from '@/compontents/lazy-image';
 import './index.scss';
 
-export default function Login() {
+const Login: React.FC = () => {
     return (
         <div className="login">
             <LazyImage className="logo" src="./static/img/icon/cat.webp" alt="logo" />
@@ -11,4 +11,6 @@ export default function Login() {
             <button className="btn">Login In</button>
         </div>
     );
-}
+};
+
+export default Login;

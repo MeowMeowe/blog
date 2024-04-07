@@ -32,11 +32,7 @@ export const disableReactDevTools = (): void => {
     }
 };
 
-export const debounce = <T extends (...args: any[]) => void>(
-    func: T,
-    delay = 500,
-    immediately = false
-): ReturnType<T> => {
+export const debounce = <T extends (...args: any[]) => void>(func: T, delay = 500, immediately = false): ReturnType<T> => {
     let timer: ReturnType<typeof setTimeout> | null = null;
     return function (this: any, ...args: Parameters<T>) {
         if (timer) clearTimeout(timer);
@@ -56,11 +52,7 @@ export const debounce = <T extends (...args: any[]) => void>(
     } as ReturnType<T>;
 };
 
-export const throttle = <T extends (...args: any[]) => void>(
-    func: T,
-    delay = 500,
-    immediately = false
-): ReturnType<T> => {
+export const throttle = <T extends (...args: any[]) => void>(func: T, delay = 500, immediately = false): ((...args: Parameters<T>) => void) => {
     let timer: ReturnType<typeof setTimeout> | null = null;
     return function (this: any, ...args: Parameters<T>) {
         if (immediately) {
@@ -78,7 +70,7 @@ export const throttle = <T extends (...args: any[]) => void>(
                 timer = null;
             }, delay);
         }
-    } as ReturnType<T>;
+    };
 };
 
 const copySymbol = (val: symbol) => Symbol(val.description);

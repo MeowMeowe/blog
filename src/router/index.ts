@@ -14,7 +14,7 @@ const About = lazy(() => import('@/pages/about'));
 interface IRouter {
     key: string;
     path: string;
-    element: React.LazyExoticComponent<() => JSX.Element>;
+    element: React.LazyExoticComponent<React.FC<object>>;
     title: string;
     navShow: boolean;
 }

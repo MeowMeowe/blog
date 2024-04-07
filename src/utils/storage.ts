@@ -9,10 +9,7 @@ const createStorageUtil = <T extends string>(storage: Storage): StorageUtil<T> =
         try {
             storage.setItem(key, JSON.stringify(value));
         } catch (error) {
-            console.error(
-                `Error setting ${storage === localStorage ? 'localStorage' : 'sessionStorage'}:`,
-                error
-            );
+            console.error(`Error setting ${storage === localStorage ? 'localStorage' : 'sessionStorage'}:`, error);
         }
     },
 
@@ -21,10 +18,7 @@ const createStorageUtil = <T extends string>(storage: Storage): StorageUtil<T> =
             const value = storage.getItem(key);
             return value ? JSON.parse(value) : null;
         } catch (error) {
-            console.error(
-                `Error getting ${storage === localStorage ? 'localStorage' : 'sessionStorage'}:`,
-                error
-            );
+            console.error(`Error getting ${storage === localStorage ? 'localStorage' : 'sessionStorage'}:`, error);
             return null;
         }
     },
@@ -33,10 +27,7 @@ const createStorageUtil = <T extends string>(storage: Storage): StorageUtil<T> =
         try {
             storage.removeItem(key);
         } catch (error) {
-            console.error(
-                `Error removing ${storage === localStorage ? 'localStorage' : 'sessionStorage'}:`,
-                error
-            );
+            console.error(`Error removing ${storage === localStorage ? 'localStorage' : 'sessionStorage'}:`, error);
         }
     }
 });
@@ -49,9 +40,7 @@ const cookieUtil: StorageUtil<string> = {
         const expirationDate = new Date();
         expirationDate.setDate(expirationDate.getDate() + days);
 
-        document.cookie = `${name}=${encodeURIComponent(
-            value
-        )}; expires=${expirationDate.toUTCString()}; path=/`;
+        document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expirationDate.toUTCString()}; path=/`;
     },
 
     get: (name: string): string | null => {

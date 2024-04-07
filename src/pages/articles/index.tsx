@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import marked from 'marked'; // 修正 marked 的引入
+import * as marked from 'marked'; // 修正 marked 的引入
 
 import './index.scss';
 
@@ -7,9 +7,7 @@ const Articles: React.FC = () => {
     useEffect(() => {
         // 在组件挂载后执行 marked 函数
         const test = () => {
-            document.getElementById('content')!.innerHTML = marked(
-                '# Marked in browser\n\nRendered by **marked**.'
-            );
+            document.getElementById('content')!.innerHTML = marked('# Marked in browser\n\nRendered by **marked**.');
         };
         test();
 
@@ -25,9 +23,7 @@ const Articles: React.FC = () => {
 
     return (
         <div className="articles" id="content">
-            <button onClick={() => marked('# Marked in browser\n\nRendered by **marked**.')}>
-                11111
-            </button>
+            <button onClick={() => marked('# Marked in browser\n\nRendered by **marked**.')}>11111</button>
         </div>
     );
 };

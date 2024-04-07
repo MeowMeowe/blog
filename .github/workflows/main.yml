@@ -26,10 +26,13 @@ jobs:
     - name: Install dependencies  # 第二步，安装依赖
       run: npm install
 
-    - name: Build                 # 第三步，打包代码
+    - name: Lint                  # 第三步，代码检查
+      run: npm run lint --fix
+
+    - name: Build                 # 第四步，打包代码
       run: npm run build --if-present
 
-    - name: Deploy to Server      # 第四步，rsync推送文件
+    - name: Deploy to Server      # 第五步，rsync推送文件
       uses: AEnterprise/rsync-deploy@v1.0.2 # 使用别人包装好的步骤镜像
       env:
         DEPLOY_KEY: ${{ secrets.TENTCENT_BLOG }}   # 引用配置，SSH私钥
@@ -40,16 +43,3 @@ jobs:
         USERNAME: ${{ secrets.SSH_NAME }}  # 引用配置，服务器登录名
         PASSWORD: ${{ secrets.SSH_PASSWORD }}  # 引用配置，服务器登录密码
         SERVER_DESTINATION: /usr/local/meow/   # 部署到目标文件夹
-        
-
-
-    # - name: Restart server   # 第五步，重启服务
-    #   uses: appleboy/ssh-action@master
-    #   with:
-    #     host: ${{ secrets.SSH_HOST }}  # 下面三个配置与上一步类似
-    #     username: ${{ secrets.SSH_USERNAME }}
-    #     key: ${{ secrets.DEPLOY_KEY }}
-    #     # 重启的脚本，根据自身情况做相应改动，一般要做的是migrate数据库以及重启服务器
-    #     script: |
-    #       cd /www/server/web-server/
-    #       pm2 reload app.js
