@@ -16,10 +16,7 @@ export const ajax = async <T>(options: Options): Promise<IResponse<T>> => {
     };
     const mergedOptions = { ...defaultOptions, ...options };
 
-    if (
-        mergedOptions.headers &&
-        mergedOptions.headers['Content-Type'] === 'application/x-www-form-urlencoded'
-    ) {
+    if (mergedOptions.headers && mergedOptions.headers['Content-Type'] === 'application/x-www-form-urlencoded') {
         mergedOptions.data = qs.stringify(mergedOptions.data);
     }
 

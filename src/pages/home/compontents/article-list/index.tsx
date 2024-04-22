@@ -28,7 +28,6 @@ const ArticleList: React.FC = () => {
     const article: IArticles[] = articles;
 
     const handleLink = (link: string | number, isOut: boolean): void => {
-        console.log(11111);
         if (isOut) {
             window.location.href = String(link);
         } else {
@@ -51,14 +50,7 @@ const ArticleList: React.FC = () => {
                 <h1 className="title">{item.title}</h1>
                 <LazyImage className="cover" src={`/img/bg/${randomNumber(1, 6, 0)}.webp`} alt="" onClick={() => handleLink(item.id, false)} />
                 <div className="desc">{item.desc}</div>
-                <div className="links">
-                    <div className="links-title">外站入口：</div>
-                    {renderLinks(item.link, 'links')}
-                </div>
-                <div className="tech-Stack">
-                    <div className="tech-Stack-title">涉及技术栈：</div>
-                    {renderLinks(item.techStack, 'tech-Stack')}
-                </div>
+                {/* <div className="tech-Stack">{renderLinks(item.techStack, 'tech-Stack')}</div> */}
                 <div className="msgs">
                     <div className="time msgs-item-wrap">
                         <LazyImage className="msgs-item-icon" src="/img/icon/clock.webp" alt="Time" />
@@ -77,11 +69,7 @@ const ArticleList: React.FC = () => {
         ));
     };
 
-    return (
-        <div className="article-list">
-            <div className="article-list-content articles-flex">{renderArticles()}</div>
-        </div>
-    );
+    return <div className="articles-flex">{renderArticles()}</div>;
 };
 
 export default ArticleList;

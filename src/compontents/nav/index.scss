@@ -14,6 +14,8 @@ $bgc: rgba(0, 0, 0, 0.25);
     top: 0;
     left: 0;
     z-index: 3;
+    transition: all 0.5s;
+
     .logo {
         font-family: Pacifico-Regular;
         cursor: pointer;
@@ -44,12 +46,12 @@ $bgc: rgba(0, 0, 0, 0.25);
             }
         }
     }
-    .fold-menu {
+    .menu {
         width: 60px;
         height: 60px;
         position: relative;
         @include flexCenter;
-        // margin-right: 15px;
+        display: none;
         &-icon {
             width: 25px;
             height: 25px;
@@ -58,6 +60,7 @@ $bgc: rgba(0, 0, 0, 0.25);
         &-links {
             display: none;
         }
+
         &-links-open {
             position: absolute;
             width: 100px;
@@ -113,7 +116,7 @@ $bgc: rgba(0, 0, 0, 0.25);
     color: rgba(0, 0, 0, 0.8);
     box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
     animation-name: navdown;
-    animation-duration: 0.75s;
+    animation-duration: 0.5s;
     animation-timing-function: ease-out;
 }
 
@@ -292,5 +295,16 @@ $bgc: rgba(0, 0, 0, 0.25);
     100% {
         top: 0;
         opacity: 1;
+    }
+}
+
+@media (max-width: 581px) {
+    .nav-wrap {
+        .menu {
+            display: flex;
+        }
+        .links {
+            display: none;
+        }
     }
 }

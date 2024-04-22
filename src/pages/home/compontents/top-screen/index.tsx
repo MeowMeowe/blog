@@ -4,7 +4,7 @@ import './index.scss';
 const FirstSight: React.FC = () => {
     const jumpToNextPage = () => {
         window.scrollTo({
-            top: window.innerHeight,
+            top: window.innerHeight - 66,
             behavior: 'smooth'
         });
     };

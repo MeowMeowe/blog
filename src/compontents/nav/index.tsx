@@ -15,8 +15,7 @@ interface NavItem {
 
 const Nav: React.FC = () => {
     const [navClass, setNavClass] = useState<string>(''); //nav className
-    const [menuFold, setMenuFold] = useState<boolean>(window.innerWidth < 500); //nav折叠
-    const [clickMenu, setClickMenu] = useState<boolean>(false); //menu触发点击
+    const [menuFold, setMenuFold] = useState<boolean>(false); //menu折叠
 
     const [isTopShow, setIsTopShow] = useState<boolean>(false); //目标
     const [isHeartShow, setIsHeartShow] = useState<boolean>(false); //中箭的心
@@ -27,18 +26,13 @@ const Nav: React.FC = () => {
     // 全局点击隐藏menu
     const handleDomClick = (e: MouseEvent) => {
         const target = e.target as HTMLElement;
-        if (target.className !== 'fold-menu-icon' && target.className !== 'fold-menu-links-open') {
-            setClickMenu(false);
+        if (target.className !== 'menu-icon' && target.className !== 'menu-links-open') {
+            setMenuFold(false);
         }
     };
 
     const handleClickMenu = () => {
-        setClickMenu((prevClickMenu) => !prevClickMenu);
-    };
-
-    // 监听窗口大小
-    const listenResize = () => {
-        setMenuFold(window.innerWidth < 550);
+        setMenuFold((prev) => !prev);
     };
 
     // 监听滚动
@@ -56,7 +50,7 @@ const Nav: React.FC = () => {
 
         if (window.scrollY >= 66) {
             setNavClass('fix-top');
-        } else {
+        } else if (window.scrollY == 0) {
             setNavClass('');
         }
     };
@@ -68,20 +62,15 @@ const Nav: React.FC = () => {
     };
 
     useEffect(() => {
-        const throttledListenResize = throttle(listenResize, 100);
-        document.addEventListener('scroll', listenScroll);
-        document.addEventListener('click', handleDomClick);
-        window.addEventListener('resize', throttledListenResize);
+        const menuShow = window.innerWidth < 580;
+        const throttledListenScroll = throttle(listenScroll, 100);
+        document.addEventListener('scroll', throttledListenScroll);
+        menuShow && document.addEventListener('click', handleDomClick);
         return () => {
-            document.removeEventListener('scroll', listenScroll);
+            document.removeEventListener('scroll', throttledListenScroll);
             document.removeEventListener('click', handleDomClick);
-            window.removeEventListener('resize', throttledListenResize);
         };
     }, [clickToTop]);
-
-    useEffect(() => {
-        setClickMenu(false);
-    }, [menuFold]);
 
     const renderLinks = () => {
         return RouterSchemle.map((item: NavItem) => {
@@ -102,19 +91,11 @@ const Nav: React.FC = () => {
                         <img className="logo-img" src="/img/icon/cat.webp" alt="logo" />
                         <p>MeowGod`s Blog </p>
                     </div>
-                    {menuFold ? (
-                        <div className="fold-menu">
-                            <img
-                                className="fold-menu-icon"
-                                onClick={handleClickMenu}
-                                src={clickMenu ? '/img/icon/down-arrow.webp' : '/img/icon/menu.webp'}
-                                alt="fold-menu"
-                            />
-                            <div className={clickMenu ? 'fold-menu-links-open' : 'fold-menu-links'}>{renderLinks()}</div>
-                        </div>
-                    ) : (
-                        <div className="links">{renderLinks()}</div>
-                    )}
+                    <div className="menu">
+                        <img className="menu-icon" onClick={handleClickMenu} src={menuFold ? '/img/icon/down-arrow.webp' : '/img/icon/menu.webp'} alt="fold-menu" />
+                        <div className={menuFold ? 'menu-links-open' : 'menu-links'}>{renderLinks()}</div>
+                    </div>
+                    <div className="links">{renderLinks()}</div>
                 </nav>
             </header>
             <div className="exterior">
@@ -127,19 +108,8 @@ const Nav: React.FC = () => {
                     <div className={`top-icon-wrap top-icon-${isTopShow}`} onClick={scrollToTop}>
                         <LazyImage className="top-icon" src="/img/icon/cupid.webp" alt="go-top" />
                     </div>
-                    <LazyImage
-                        className={`heart-${isHeartShow ? '' : 'arrow-'}icon heart-icon-${isTopShow}`}
-                        src={`/img/icon/${isHeartShow ? 'target' : 'cupid-1'}.webp`}
-                        alt="heart"
-                    />
-                    {isArrowShow && (
-                        <LazyImage
-                            className={`arrow-icon arrow-icon-${isArrowShow}`}
-                            src="/img/icon/cupid-2.webp"
-                            style={{ top: window.innerHeight - 136 + 'px' }}
-                            alt="arrow"
-                        />
-                    )}
+                    <LazyImage className={`heart-${isHeartShow ? '' : 'arrow-'}icon heart-icon-${isTopShow}`} src={`/img/icon/${isHeartShow ? 'target' : 'cupid-1'}.webp`} alt="heart" />
+                    {isArrowShow && <LazyImage className={`arrow-icon arrow-icon-${isArrowShow}`} src="/img/icon/cupid-2.webp" style={{ top: window.innerHeight - 136 + 'px' }} alt="arrow" />}
                 </div>
             </div>
         </>

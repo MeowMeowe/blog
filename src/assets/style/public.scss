@@ -4,7 +4,6 @@ $baseGreen: #36c9a3;
 @mixin Container {
     width: 100%;
     min-height: calc(100vh - 66px);
-    overflow: hidden;
     position: relative;
     box-sizing: border-box;
 }

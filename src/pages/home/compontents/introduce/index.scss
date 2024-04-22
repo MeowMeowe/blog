@@ -1,0 +1,17 @@
+.introduce {
+    width: 260px;
+    height: calc(100vh - 130px);
+    background: #fff;
+    color: #000;
+    position: sticky;
+    top: 98px;
+    border-radius: 6px;
+}
+
+@media (max-width: 580px) {
+    //一栏
+    .introduce {
+        width: calc(100% - 40px);
+        max-width: 440px;
+    }
+}
