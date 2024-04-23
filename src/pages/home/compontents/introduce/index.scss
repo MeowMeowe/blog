@@ -13,5 +13,7 @@
     .introduce {
         width: calc(100% - 40px);
         max-width: 440px;
+        position: relative;
+        top: 0;
     }
 }

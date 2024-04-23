@@ -7,14 +7,14 @@ const Footer: React.FC = () => {
         const logoArr: string[] = ['CSS3', 'HTML5', 'JS', 'React', 'sass', 'Vite'];
         return logoArr.map((v) => (
             <div className="logos-items" key={v} title={v}>
-                <LazyImage className="logos-icon" src={`/img/icon/${v}.webp`} alt={v} />
+                <LazyImage className="logos-icon" src={`/icon/${v}.webp`} alt={v} />
             </div>
         ));
     };
 
     return (
         <footer>
-            <LazyImage className="logo" src="/img/icon/cat.webp" alt="logo" />
+            <LazyImage className="logo" src="/icon/cat.webp" alt="logo" />
             <p className="tips">人生中最艰难的是选择</p>
             <div className="logos">{renderLogos()}</div>
             <p>Designed & Powerd by MeowGod </p>

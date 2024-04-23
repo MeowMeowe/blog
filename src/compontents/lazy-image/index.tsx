@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
+import Loading from '../loading';
 
 interface LazyImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {
     src: string;
     alt: string;
+    noLoading?: boolean;
 }
 
-const LazyImage: React.FC<LazyImageProps> = ({ src, alt, ...rest }) => {
+const LazyImage: React.FC<LazyImageProps> = ({ src, alt, noLoading = false, ...rest }) => {
     return (
-        <React.Suspense fallback={<div>Loading...</div>}>
+        <React.Suspense fallback={noLoading ? <div /> : <Loading />}>
             <LazyImageComponent src={src} alt={alt} {...rest} />
         </React.Suspense>
     );
@@ -39,7 +41,7 @@ const LazyImageComponent: React.FC<LazyImageProps> = ({ src, alt, ...rest }) => 
         }
     }, [src]);
 
-    return <img ref={imgRef} src={isLoading ? '' : src} alt={alt} {...rest} />;
+    return <img ref={imgRef} src={isLoading ? '/img/control.png' : src} alt={alt} {...rest} />;
 };
 
 export default LazyImage;

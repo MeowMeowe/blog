@@ -3,9 +3,8 @@ import react from '@vitejs/plugin-react';
 import viteEslint from 'vite-plugin-eslint';
 import { visualizer } from 'rollup-plugin-visualizer'; // 打包分析
 import obfuscatorPlugin from 'rollup-plugin-javascript-obfuscator'; // 代码混淆
-// import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'; // svg图标
-
-import path from 'path';
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'; // svg图标
+import { resolve } from 'path';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -23,8 +22,6 @@ export default defineConfig({
             apply: 'build',
             ...obfuscatorPlugin({
                 options: {
-                    // Your javascript-obfuscator options here
-                    // See what's allowed: https://github.com/javascript-obfuscator/javascript-obfuscator
                     compact: true,
                     controlFlowFlattening: false,
                     deadCodeInjection: false,
@@ -52,19 +49,18 @@ export default defineConfig({
                     unicodeEscapeSequence: false
                 }
             })
-        }
-        // createSvgIconsPlugin({
-        //     iconDirs: [path.resolve(process.cwd(), 'src/assets/icons')],
-        //     symbolId: 'icon-[dir]-[name]'
-        // })
+        },
+        createSvgIconsPlugin({
+            iconDirs: [resolve(process.cwd(), 'src/assets/icon')],
+            symbolId: 'icon-[dir]-[name]'
+        })
     ],
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, './src')
+            '@': resolve(__dirname, 'src')
         }
     },
     server: {
-        open: true,
         cors: true,
         proxy: {
             '/api': {

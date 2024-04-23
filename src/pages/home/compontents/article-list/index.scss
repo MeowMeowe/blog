@@ -45,9 +45,10 @@
             width: 100%;
             border-radius: 4px;
             margin: 5px 0;
-            box-shadow: 0 5px 15px 0 rgb(0 0 0 / 35%);
+            box-shadow: 0 5px 15px 0 rgb(0 0 0 / 10%);
+            position: relative;
             &:hover {
-                transform: scale(1.05);
+                transform: scale(1.03);
             }
         }
         .desc {

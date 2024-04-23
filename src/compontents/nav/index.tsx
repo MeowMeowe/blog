@@ -21,7 +21,7 @@ const Nav: React.FC = () => {
     const [isHeartShow, setIsHeartShow] = useState<boolean>(false); //中箭的心
     const [isArrowShow, setIsArrowShow] = useState<boolean>(false); //箭
     const [clickToTop, setClickToTop] = useState<boolean>(false); //toTop触发点击
-    const imgNumRef = useRef<string>(randomNumber(1, 6, 0)); //背景
+    const imgNumRef = useRef<string>(randomNumber(1, 14, 0)); //背景
 
     // 全局点击隐藏menu
     const handleDomClick = (e: MouseEvent) => {
@@ -88,11 +88,11 @@ const Nav: React.FC = () => {
             <header>
                 <nav className={`nav-wrap ${navClass}`}>
                     <div className="logo">
-                        <img className="logo-img" src="/img/icon/cat.webp" alt="logo" />
+                        <img className="logo-img" src="/icon/cat.webp" alt="logo" />
                         <p>MeowGod`s Blog </p>
                     </div>
                     <div className="menu">
-                        <img className="menu-icon" onClick={handleClickMenu} src={menuFold ? '/img/icon/down-arrow.webp' : '/img/icon/menu.webp'} alt="fold-menu" />
+                        <img className="menu-icon" onClick={handleClickMenu} src={menuFold ? '/icon/down-arrow.webp' : '/icon/menu.webp'} alt="fold-menu" />
                         <div className={menuFold ? 'menu-links-open' : 'menu-links'}>{renderLinks()}</div>
                     </div>
                     <div className="links">{renderLinks()}</div>
@@ -101,15 +101,15 @@ const Nav: React.FC = () => {
             <div className="exterior">
                 {/* 全局背景 */}
                 <div className="bg">
-                    <img className="bg-img" src={`/img/bg/${imgNumRef.current}.webp`} alt="bg" />
+                    <LazyImage className="bg-img" src={`/img/bg/${imgNumRef.current}.webp`} alt="bg" noLoading />
                 </div>
                 {/* 滚动 */}
                 <div className="scroll-bar">
                     <div className={`top-icon-wrap top-icon-${isTopShow}`} onClick={scrollToTop}>
-                        <LazyImage className="top-icon" src="/img/icon/cupid.webp" alt="go-top" />
+                        <LazyImage className="top-icon" src="/icon/cupid.webp" alt="go-top" />
                     </div>
-                    <LazyImage className={`heart-${isHeartShow ? '' : 'arrow-'}icon heart-icon-${isTopShow}`} src={`/img/icon/${isHeartShow ? 'target' : 'cupid-1'}.webp`} alt="heart" />
-                    {isArrowShow && <LazyImage className={`arrow-icon arrow-icon-${isArrowShow}`} src="/img/icon/cupid-2.webp" style={{ top: window.innerHeight - 136 + 'px' }} alt="arrow" />}
+                    <LazyImage className={`heart-${isHeartShow ? '' : 'arrow-'}icon heart-icon-${isTopShow}`} src={`/icon/${isHeartShow ? 'target' : 'cupid-1'}.webp`} alt="heart" />
+                    {isArrowShow && <LazyImage className={`arrow-icon arrow-icon-${isArrowShow}`} src="/icon/cupid-2.webp" style={{ top: window.innerHeight - 136 + 'px' }} alt="arrow" />}
                 </div>
             </div>
         </>
