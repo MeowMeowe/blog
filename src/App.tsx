@@ -1,14 +1,9 @@
 import React from 'react';
-import { Provider } from 'react-redux';
-import Layout from './layout/layout';
-import store from './store';
+import { RouterProvider } from 'react-router-dom';
+import { router } from '@/router';
 import './App.scss';
 
 const App: React.FC = () => {
-    return (
-        <Provider store={store}>
-            <Layout />
-        </Provider>
-    );
+    return <RouterProvider router={router} />;
 };
 export default App;

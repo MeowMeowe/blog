@@ -1,8 +1,8 @@
 import { throttle } from '@/utils/utils';
 import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import LazyImage from '../lazy-image';
-import RouterSchemle from '@/router';
+import { RouterSchemle } from '@/router';
+import LazyImage from '../../../compontents/lazy-image';
 import { randomNumber } from '@/utils/utils';
 import './index.scss';
 
@@ -10,13 +10,12 @@ interface NavItem {
     key: string;
     title: string;
     path: string;
-    navShow: boolean;
+    // navShow: boolean;
 }
 
 const Nav: React.FC = () => {
     const [navClass, setNavClass] = useState<string>(''); //nav className
     const [menuFold, setMenuFold] = useState<boolean>(false); //menu折叠
-
     const [isTopShow, setIsTopShow] = useState<boolean>(false); //目标
     const [isHeartShow, setIsHeartShow] = useState<boolean>(false); //中箭的心
     const [isArrowShow, setIsArrowShow] = useState<boolean>(false); //箭
@@ -73,12 +72,12 @@ const Nav: React.FC = () => {
     }, [clickToTop]);
 
     const renderLinks = () => {
-        return RouterSchemle.map((item: NavItem) => {
-            return item.navShow ? (
+        return RouterSchemle[0].children.map((item: NavItem) => {
+            return (
                 <Link key={item.key} to={item.path}>
                     {item.title}
                 </Link>
-            ) : null;
+            );
         });
     };
 

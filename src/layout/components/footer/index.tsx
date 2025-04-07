@@ -1,5 +1,5 @@
 import React from 'react';
-import LazyImage from '../lazy-image';
+import LazyImage from '../../../compontents/lazy-image';
 import './index.scss';
 
 const Footer: React.FC = () => {

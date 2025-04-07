@@ -19,14 +19,11 @@
         background-color: #fff;
         border-radius: 6px;
         box-sizing: border-box;
-        padding: 10px 16px;
+        padding: 12px;
         overflow: hidden;
         @include flexCenter;
         justify-content: space-around;
-        margin-bottom: 32px;
-        &:nth-child(3n) {
-            // transform: translateY(32px);
-        }
+        margin-bottom: 16px;
         .title-icon {
             width: 50px;
             margin-bottom: 5px;
@@ -125,28 +122,27 @@
     }
 }
 
-@media (max-width: 580px) {
+@media (max-width: 654px) {
     //一栏上下布局
     .articles-flex {
         column-count: 1;
-        width: calc(100% - 40px);
-        max-width: 440px;
+        width: calc(100% - 32px);
     }
 }
 
-@media (min-width: 581px) and (max-width: 1024px) {
+@media (min-width: 654px) and (max-width: 1024px) {
     // 一栏左右布局
     .articles-flex {
         column-count: 1;
-        width: 48%;
-        max-width: 440px;
+        width: calc(50% - 24px);
+        // max-width: 440px;
     }
 }
 
 @media (min-width: 1025px) and (max-width: 1366px) {
     // 两栏
     .articles-flex {
-        width: calc(100% - 468px);
+        width: calc(100% - 454px);
         column-count: 2;
     }
 }

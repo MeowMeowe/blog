@@ -1,0 +1,6 @@
+.table {
+    @include Container;
+    background-color: #fff;
+    color: black;
+    height: 100vh;
+}

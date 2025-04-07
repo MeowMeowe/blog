@@ -1,19 +1,104 @@
 .introduce {
-    width: 260px;
-    height: calc(100vh - 130px);
     background: #fff;
-    color: #000;
-    position: sticky;
-    top: 98px;
     border-radius: 6px;
+    box-sizing: border-box;
+    padding: 16px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 32px;
+
+    width: 240px;
+    position: sticky;
+    top: 82px;
+
+    .introduce-header {
+        margin-bottom: 12px;
+
+        .introduce-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            .introduce-title-icon {
+                width: 32px;
+                height: 32px;
+            }
+
+            h2 {
+                font-size: 16px;
+                color: #333;
+                font-weight: 600;
+            }
+        }
+    }
+
+    .introduce-body {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        .introduce-content {
+            p {
+                color: #666;
+                line-height: 1.6;
+                margin-bottom: 8px;
+                font-size: 14px;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        .introduce-stats {
+            .introduce-stats-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+
+                .introduce-stats-item {
+                    display: flex;
+                    align-items: center;
+                    gap: 12px;
+                    padding: 12px;
+                    background: #f8f9fa;
+                    border-radius: 8px;
+                    transition: all 0.3s ease;
+
+                    &:hover {
+                        background: #f0f2f5;
+                        transform: translateY(-2px);
+                    }
+
+                    img {
+                        width: 24px;
+                        height: 24px;
+                    }
+
+                    .stat-info {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 4px;
+
+                        .stat-value {
+                            font-size: 18px;
+                            font-weight: 600;
+                            color: #333;
+                        }
+
+                        .stat-name {
+                            font-size: 12px;
+                            color: #666;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
-@media (max-width: 580px) {
-    //一栏
+@media (max-width: 654px) {
     .introduce {
-        width: calc(100% - 40px);
-        max-width: 440px;
-        position: relative;
-        top: 0;
+        display: none;
     }
 }

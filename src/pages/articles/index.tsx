@@ -1,29 +1,80 @@
-import React, { useEffect } from 'react';
-import * as marked from 'marked'; // 修正 marked 的引入
-
+import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import * as marked from 'marked';
+import { getArticleById } from '@/api/articles';
 import './index.scss';
 
-const Articles: React.FC = () => {
-    useEffect(() => {
-        // 在组件挂载后执行 marked 函数
-        const test = () => {
-            document.getElementById('content')!.innerHTML = marked('# Marked in browser\n\nRendered by **marked**.');
-        };
-        test();
+interface Article {
+    id: number;
+    title: string;
+    content: string;
+    createTime: string;
+    updateTime: string;
+    author: string;
+    tags: string[];
+}
 
-        // 返回清理函数，在组件销毁时清理副作用
-        return () => {
-            // 清空 content 元素的 innerHTML
-            const contentElement = document.getElementById('content');
-            if (contentElement) {
-                contentElement.innerHTML = '';
+const Articles: React.FC = () => {
+    const [searchParams] = useSearchParams();
+    const [article, setArticle] = useState<Article | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchArticle = async () => {
+            try {
+                const id = searchParams.get('id');
+                if (!id) {
+                    setError('Article ID not found');
+                    setLoading(false);
+                    return;
+                }
+
+                const data = await getArticleById(parseInt(id));
+                setArticle(data);
+            } catch (err) {
+                setError('Failed to load article');
+                console.error('Error fetching article:', err);
+            } finally {
+                setLoading(false);
             }
         };
-    }, []); // 第二个参数是一个空数组，表示该 useEffect 仅在组件挂载时执行一次
+
+        fetchArticle();
+    }, [searchParams]);
+
+    if (loading) {
+        return <div className="articles-loading">Loading...</div>;
+    }
+
+    if (error) {
+        return <div className="articles-error">{error}</div>;
+    }
+
+    if (!article) {
+        return <div className="articles-not-found">Article not found</div>;
+    }
 
     return (
-        <div className="articles" id="content">
-            <button onClick={() => marked('# Marked in browser\n\nRendered by **marked**.')}>11111</button>
+        <div className="articles">
+            <article className="article-content">
+                <header className="article-header">
+                    <h1>{article.title}</h1>
+                    <div className="article-meta">
+                        <span>By {article.author}</span>
+                        <span>Created: {new Date(article.createTime).toLocaleDateString()}</span>
+                        <span>Updated: {new Date(article.updateTime).toLocaleDateString()}</span>
+                    </div>
+                    <div className="article-tags">
+                        {article.tags.map((tag, index) => (
+                            <span key={index} className="tag">
+                                {tag}
+                            </span>
+                        ))}
+                    </div>
+                </header>
+                <div className="article-body" dangerouslySetInnerHTML={{ __html: marked(article.content) }} />
+            </article>
         </div>
     );
 };

@@ -10,7 +10,7 @@ $bgc: rgba(0, 0, 0, 0.25);
     box-sizing: border-box;
     color: #ffffff;
     line-height: 66px;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     z-index: 3;
@@ -127,7 +127,7 @@ $bgc: rgba(0, 0, 0, 0.25);
     top: 0;
     left: 0;
     font-size: 0;
-    z-index: 0;
+    z-index: -1;
     &-img {
         width: 100%;
         height: 100%;
