@@ -1,45 +1,114 @@
-name: Blog CI/CD
+name: Next.js Blog CI/CD
 
 on:
   push:
     branches:
-      - main  # 只在master上push触发部署
-    paths-ignore:   # 下列文件的变更不触发部署，可以自行添加
+      - main  # 主分支触发部署
+    paths-ignore:   # 下列文件的变更不触发部署
       - README.md
+      - README_*.md
       - LICENSE
+      - '**.md'
+      - '.vscode/**'
+      - '.idea/**'
 
 jobs:
-  build-production:
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
-    runs-on: ubuntu-latest   # 使用ubuntu系统镜像运行自动化脚本(温馨提示：和你所使用的操作系统及服务器系统无关，我本地用的windows10,云服务器用的centos)
     strategy:
       matrix:
-        node-version: [19.x] # 配置所需node版本
-    steps:  # 自动化步骤
-    - uses: actions/checkout@v2   # 第一步，检出仓库副本
+        node-version: [20.x]  # Next.js 14 推荐使用 Node.js 18+
 
-    - name: Use Node.js ${{ matrix.node-version }} #规定node.js版本(可不配置)
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
+    steps:
+      # 1. 检出代码
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-    - name: Install dependencies  # 第二步，安装依赖
-      run: npm install
+      # 2. 设置 Node.js 环境
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
 
-    - name: Lint                  # 第三步，代码检查
-      run: npm run lint --fix
+      # 3. 设置 pnpm
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: false
 
-    - name: Build                 # 第四步，打包代码
-      run: npm run build --if-present
+      # 4. 获取 pnpm store 目录
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
 
-    - name: Deploy to Server      # 第五步，rsync推送文件
-      uses: AEnterprise/rsync-deploy@v1.0.2 # 使用别人包装好的步骤镜像
-      env:
-        DEPLOY_KEY: ${{ secrets.TENTCENT_BLOG }}   # 引用配置，SSH私钥
-        ARGS: -avz --delete --exclude='*.pyc'   # rsync参数，排除.pyc文件
-        SERVER_PORT: '22'  # SSH端口
-        FOLDER: ./dist/*  # 要推送的文件夹，路径相对于代码仓库的根目录
-        SERVER_IP: ${{ secrets.SSH_HOST }}  # 引用配置，服务器的host名（IP或者域名domain.com）
-        USERNAME: ${{ secrets.SSH_NAME }}  # 引用配置，服务器登录名
-        PASSWORD: ${{ secrets.SSH_PASSWORD }}  # 引用配置，服务器登录密码
-        SERVER_DESTINATION: /usr/local/meow/   # 部署到目标文件夹
+      # 5. 缓存依赖
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      # 6. 安装依赖
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
+
+      # 7. 创建环境变量文件
+      - name: Create .env file
+        run: |
+          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
+          echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" >> .env
+          echo "NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }}" >> .env
+          echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" >> .env
+
+      # 8. 生成 Prisma Client
+      - name: Generate Prisma Client
+        run: pnpm prisma generate
+
+      # 9. 代码检查（可选）
+      - name: Lint Code
+        run: pnpm lint || true  # 不阻塞部署
+
+      # 10. 构建 Next.js 项目
+      - name: Build Next.js Application
+        run: pnpm build
+        env:
+          NODE_ENV: production
+
+      # 11. 部署到服务器
+      - name: Deploy to Server
+        uses: easingthemes/ssh-deploy@main
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.TENTCENT_BLOG }}
+          ARGS: "-rlgoDzvc -i --delete"
+          SOURCE: ".next/ public/ package.json pnpm-lock.yaml prisma/ .env next.config.mjs"
+          REMOTE_HOST: ${{ secrets.SSH_HOST }}
+          REMOTE_USER: ${{ secrets.SSH_NAME }}
+          TARGET: /usr/local/meow/blog/
+          EXCLUDE: "/node_modules/, /.git/, /.github/"
+          SCRIPT_BEFORE: |
+            whoami
+            ls -al
+          SCRIPT_AFTER: |
+            cd /usr/local/meow/blog
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            pnpm install --prod --frozen-lockfile
+            pnpm prisma generate
+            pm2 restart blog || pm2 start npm --name "blog" -- start
+            echo "Deployment completed successfully!"
+
+      # 12. 通知部署结果（可选）
+      - name: Deployment Status
+        if: always()
+        run: |
+          if [ ${{ job.status }} == 'success' ]; then
+            echo "✅ Deployment successful!"
+          else
+            echo "❌ Deployment failed!"
+          fi

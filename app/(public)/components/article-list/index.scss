@@ -1,0 +1,288 @@
+@mixin links {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+}
+
+// 文章列表容器
+.article-list-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.articles-flex {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+    column-gap: 32px;
+    column-fill: balance;
+    box-sizing: border-box;
+
+    &-items {
+        height: 100%;
+        background-color: #fff;
+        border-radius: 6px;
+        box-sizing: border-box;
+        padding: 12px;
+        overflow: hidden;
+        @include flexCenter;
+        justify-content: space-around;
+        margin-bottom: 16px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+        &:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .title-icon {
+            width: 50px;
+            margin-bottom: 5px;
+        }
+        .title {
+            width: 100%;
+            text-align: center;
+            height: 36px;
+            font-size: 24px;
+            line-height: 36px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 5px 0;
+        }
+        .cover {
+            width: 100%;
+            border-radius: 4px;
+            margin: 5px 0;
+            box-shadow: 0 5px 15px 0 rgb(0 0 0 / 10%);
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            &:hover {
+                transform: scale(1.03);
+            }
+        }
+        .desc {
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 5;
+            -webkit-box-orient: vertical;
+            text-indent: 2em;
+            margin: 5px 0;
+        }
+        .links {
+            margin: 5px 0;
+            @include links;
+            &-link {
+                @include flexCenter;
+            }
+            &-icon {
+                width: 30px;
+                margin: 0 8px;
+            }
+            &-title {
+                font-weight: 600;
+            }
+        }
+        .tech-Stack {
+            margin: 5px 0;
+            @include links;
+            &-link {
+                @include flexCenter;
+            }
+            &-icon {
+                width: 30px;
+                margin: 0 8px;
+            }
+            &-title {
+                font-weight: 600;
+            }
+        }
+        .msgs {
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            color: #888888;
+            &-item-wrap {
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-start;
+                align-items: center;
+            }
+            &-item-icon {
+                width: 16px;
+                height: 16px;
+                margin-right: 6px;
+            }
+            .time {
+                flex: 1;
+            }
+            .views {
+                margin-right: 10px;
+                .msgs-item-icon {
+                    transform: rotate(36deg);
+                }
+            }
+            .stars {
+            }
+        }
+
+        // 骨架屏样式
+        &.skeleton {
+            pointer-events: none;
+
+            .skeleton-icon,
+            .skeleton-title,
+            .skeleton-cover,
+            .skeleton-desc,
+            .skeleton-msgs {
+                background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+                background-size: 200% 100%;
+                animation: loading 1.5s ease-in-out infinite;
+                border-radius: 4px;
+            }
+
+            .skeleton-icon {
+                width: 50px;
+                height: 50px;
+                margin-bottom: 10px;
+            }
+
+            .skeleton-title {
+                width: 80%;
+                height: 36px;
+                margin: 10px auto;
+            }
+
+            .skeleton-cover {
+                width: 100%;
+                height: 200px;
+                margin: 10px 0;
+            }
+
+            .skeleton-desc {
+                width: 100%;
+                height: 80px;
+                margin: 10px 0;
+            }
+
+            .skeleton-msgs {
+                width: 100%;
+                height: 20px;
+                margin-top: 10px;
+            }
+        }
+    }
+    &-control {
+        height: 0px;
+        visibility: hidden;
+    }
+}
+
+// 加载更多触发器
+.load-more-trigger {
+    width: 100%;
+    padding: 40px 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loading-more {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #666;
+    font-size: 14px;
+
+    .spinner {
+        width: 24px;
+        height: 24px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #3498db;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
+}
+
+.no-more {
+    color: #999;
+    font-size: 14px;
+    text-align: center;
+    padding: 20px;
+}
+
+// 动画
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@media (max-width: 654px) {
+    .article-list-container {
+        width: calc(100% - 32px);
+    }
+    //一栏上下布局
+    .articles-flex {
+        column-count: 1;
+    }
+}
+
+@media (min-width: 654px) and (max-width: 1024px) {
+    // 一栏左右布局
+    .article-list-container {
+        width: calc(50% - 24px);
+    }
+    .articles-flex {
+        column-count: 1;
+    }
+}
+
+@media (min-width: 1025px) and (max-width: 1366px) {
+    // 两栏
+    .article-list-container {
+        width: calc(100% - 454px);
+    }
+    .articles-flex {
+        column-count: 2;
+    }
+}
+@media (min-width: 1367px) and (max-width: 1920px) {
+    // 三栏
+    .article-list-container {
+        width: calc(100% - 688px);
+    }
+    .articles-flex {
+        column-count: 3;
+    }
+}
+
+@media (min-width: 1921px) {
+    // 四栏
+    .article-list-container {
+        width: 65%;
+    }
+    .articles-flex {
+        column-count: 4;
+    }
+}

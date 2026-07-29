@@ -8,9 +8,19 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+/.next/
+/mysql_data/
 dist
 dist-ssr
 *.local
+
+# Environment files (keep the documented template)
+.env
+.env.*
+!.env.example
+
+# Runtime and generated files
+*.sock
 
 # Editor directories and files
 .vscode/*
