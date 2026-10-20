@@ -15,11 +15,11 @@ const FirstSight: React.FC = () => {
             <p className="top-screen-line" />
             <p className="top-screen-dec">这里是MeowGod的个人主页</p>
             <div className="top-screen-guide">
-                <div className="top-screen-guide-scroll-down" onClick={jumpToNextPage}>
+                <button type="button" className="top-screen-guide-scroll-down" onClick={jumpToNextPage}>
                     <span className="icon icon__1"></span>
                     <span className="icon icon__2"></span>
-                    <p className="text">开始阅读</p>
-                </div>
+                    <span className="text">开始阅读</span>
+                </button>
                 <p className="github"></p>
             </div>
         </div>

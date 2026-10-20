@@ -23,7 +23,7 @@ const CanvasTable: React.FC<CanvasTableProps> = ({ data, columns, rowHeight = 30
         startCol: 0,
         endCol: 0
     });
-    const rafId = useRef<number>();
+    const rafId = useRef<number | undefined>(undefined);
     const canvasSize = useRef({ width: 0, height: 0 });
     const columnsWidth = useRef<number[]>([]);
 
@@ -31,28 +31,6 @@ const CanvasTable: React.FC<CanvasTableProps> = ({ data, columns, rowHeight = 30
     useEffect(() => {
         columnsWidth.current = columns.map((col) => col.width);
     }, [columns]);
-
-    // 初始化画布和视口
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-
-        const updateCanvasSize = () => {
-            const rect = canvas.parentElement!.getBoundingClientRect();
-            canvas.width = rect.width * devicePixelRatio;
-            canvas.height = rect.height * devicePixelRatio;
-            canvas.style.width = `${rect.width}px`;
-            canvas.style.height = `${rect.height}px`;
-            canvasSize.current = { width: rect.width, height: rect.height };
-            updateViewport();
-        };
-
-        updateCanvasSize();
-        const resizeObserver = new ResizeObserver(updateCanvasSize);
-        resizeObserver.observe(canvas.parentElement!);
-
-        return () => resizeObserver.disconnect();
-    }, []);
 
     // 视口计算
     const updateViewport = useCallback(() => {
@@ -80,6 +58,29 @@ const CanvasTable: React.FC<CanvasTableProps> = ({ data, columns, rowHeight = 30
 
         setViewport({ startRow, endRow, startCol, endCol });
     }, [scrollPos, columns, rowHeight]);
+
+    // 初始化画布和视口
+    useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas?.parentElement) return;
+
+        const parent = canvas.parentElement;
+        const updateCanvasSize = () => {
+            const rect = parent.getBoundingClientRect();
+            canvas.width = rect.width * devicePixelRatio;
+            canvas.height = rect.height * devicePixelRatio;
+            canvas.style.width = `${rect.width}px`;
+            canvas.style.height = `${rect.height}px`;
+            canvasSize.current = { width: rect.width, height: rect.height };
+            updateViewport();
+        };
+
+        updateCanvasSize();
+        const resizeObserver = new ResizeObserver(updateCanvasSize);
+        resizeObserver.observe(parent);
+
+        return () => resizeObserver.disconnect();
+    }, [updateViewport]);
 
     // 绘制逻辑
     const draw = useCallback(() => {

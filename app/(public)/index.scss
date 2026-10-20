@@ -5,13 +5,26 @@
 
 .container-wrap {
     width: 100%;
-    height: 100%;
-    background: linear-gradient(transparent, rgba($color: #000000, $alpha: 0.4));
+    min-height: 100vh;
+    background: linear-gradient(180deg, rgba(4, 9, 25, 0.08), rgba(4, 9, 25, 0.62));
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: flex-start;
     gap: 32px;
-    padding: 32px 0 0;
+    padding: 48px max(28px, calc((100vw - 1500px) / 2)) 20px;
     box-sizing: border-box;
+}
+
+@media (max-width: 920px) {
+    .container-wrap {
+        padding: 36px 24px 16px;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 560px) {
+    .container-wrap {
+        padding: 28px 16px 8px;
+    }
 }

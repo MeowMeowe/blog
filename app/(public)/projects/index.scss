@@ -1,0 +1,40 @@
+@use '../page-shell.scss';
+
+.project-card {
+    display: flex;
+    min-height: 260px;
+    flex-direction: column;
+
+    &--featured {
+        background:
+            radial-gradient(circle at 90% 10%, rgba(92, 225, 192, 0.2), transparent 32%),
+            linear-gradient(145deg, #fff, #f2f8f6);
+    }
+}
+
+.project-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.project-card-label {
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    background: #eef6f3;
+    color: #377565;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.project-card-link {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: 0.4rem;
+    margin-top: auto;
+    padding-top: 1.25rem;
+    color: #167d66 !important;
+    font-weight: 750;
+}

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
     code: number;
     data: T | null;
     msg: string;
@@ -10,24 +10,27 @@ export interface ApiResponse<T = any> {
  * 成功响应
  */
 export function successResponse<T>(data: T, msg = 'success'): NextResponse<ApiResponse<T>> {
-    return NextResponse.json({
-        code: 200,
-        data,
-        msg
-    });
+    return NextResponse.json(
+        {
+            code: 200,
+            data,
+            msg
+        },
+        { headers: { 'Cache-Control': 'no-store' } }
+    );
 }
 
 /**
  * 错误响应
  */
-export function errorResponse(msg: string, code = 500, status = 500): NextResponse<ApiResponse> {
+export function errorResponse(msg: string, code = 500, status = 500): NextResponse<ApiResponse<null>> {
     return NextResponse.json(
         {
             code,
             data: null,
             msg
         },
-        { status }
+        { status, headers: { 'Cache-Control': 'no-store' } }
     );
 }
 

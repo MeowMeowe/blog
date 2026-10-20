@@ -1,6 +1,7 @@
 import { throttle } from '@/utils/utils';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { NavItems } from '@/utils/navItems';
 import LazyImage from '../../../components/lazy-image';
 import { randomNumber } from '@/utils/utils';
@@ -14,30 +15,39 @@ interface NavItem {
 }
 
 const Nav: React.FC = () => {
+    const pathname = usePathname();
     const [navClass, setNavClass] = useState<string>(''); //nav className
     const [menuFold, setMenuFold] = useState<boolean>(false); //menu折叠
     const [isTopShow, setIsTopShow] = useState<boolean>(false); //目标
     const [isHeartShow, setIsHeartShow] = useState<boolean>(false); //中箭的心
     const [isArrowShow, setIsArrowShow] = useState<boolean>(false); //箭
     const [clickToTop, setClickToTop] = useState<boolean>(false); //toTop触发点击
-    const imgNumRef = useRef<string>(randomNumber(1, 14, 0)); //背景
+    const [backgroundNumber, setBackgroundNumber] = useState(1);
+
+    useEffect(() => {
+        setBackgroundNumber(Number(randomNumber(1, 14, 0)));
+    }, []);
+
+    useEffect(() => {
+        setMenuFold(false);
+    }, [pathname]);
 
     // 全局点击隐藏menu
-    const handleDomClick = (e: MouseEvent) => {
+    const handleDomClick = useCallback((e: MouseEvent) => {
         const target = e.target as HTMLElement;
-        if (target.className !== 'menu-icon' && target.className !== 'menu-links-open') {
+        if (!target.closest('.menu')) {
             setMenuFold(false);
         }
-    };
+    }, []);
 
     const handleClickMenu = () => {
         setMenuFold((prev) => !prev);
     };
 
     // 监听滚动
-    const listenScroll = () => {
+    const listenScroll = useCallback(() => {
         if (window.scrollY === 0) {
-            clickToTop && setIsHeartShow(false);
+            if (clickToTop) setIsHeartShow(false);
             setIsTopShow(false);
             setIsArrowShow(false);
             setClickToTop(false);
@@ -52,7 +62,7 @@ const Nav: React.FC = () => {
         } else if (window.scrollY == 0) {
             setNavClass('');
         }
-    };
+    }, [clickToTop]);
 
     const scrollToTop = () => {
         setClickToTop(true);
@@ -61,20 +71,27 @@ const Nav: React.FC = () => {
     };
 
     useEffect(() => {
-        const menuShow = window.innerWidth < 580;
         const throttledListenScroll = throttle(listenScroll, 100);
+        const closeOnEscape = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                setMenuFold(false);
+                document.querySelector<HTMLButtonElement>('.menu-toggle')?.focus();
+            }
+        };
         document.addEventListener('scroll', throttledListenScroll);
-        menuShow && document.addEventListener('click', handleDomClick);
+        document.addEventListener('click', handleDomClick);
+        document.addEventListener('keydown', closeOnEscape);
         return () => {
             document.removeEventListener('scroll', throttledListenScroll);
             document.removeEventListener('click', handleDomClick);
+            document.removeEventListener('keydown', closeOnEscape);
         };
-    }, [clickToTop]);
+    }, [handleDomClick, listenScroll]);
 
     const renderLinks = () => {
         return NavItems.map((item: NavItem) => {
             return (
-                <Link key={item.key} href={item.path}>
+                <Link key={item.key} href={item.path} aria-current={pathname === item.path ? 'page' : undefined} onClick={() => setMenuFold(false)}>
                     {item.title}
                 </Link>
             );
@@ -86,13 +103,24 @@ const Nav: React.FC = () => {
             {/* 头部 */}
             <header>
                 <nav className={`nav-wrap ${navClass}`}>
-                    <div className="logo">
+                    <Link className="logo" href="/" aria-label="返回博客首页">
                         <img className="logo-img" src="/icon/cat.webp" alt="logo" />
                         <p>MeowGod`s Blog </p>
-                    </div>
+                    </Link>
                     <div className="menu">
-                        <img className="menu-icon" onClick={handleClickMenu} src={menuFold ? '/icon/down-arrow.webp' : '/icon/menu.webp'} alt="fold-menu" />
-                        <div className={menuFold ? 'menu-links-open' : 'menu-links'}>{renderLinks()}</div>
+                        <button
+                            type="button"
+                            className="menu-toggle"
+                            aria-label={menuFold ? '收起导航' : '展开导航'}
+                            aria-expanded={menuFold}
+                            aria-controls="mobile-navigation"
+                            onClick={handleClickMenu}
+                        >
+                            <img className="menu-icon" src={menuFold ? '/icon/down-arrow.webp' : '/icon/menu.webp'} alt="" />
+                        </button>
+                        <div id="mobile-navigation" className={menuFold ? 'menu-links-open' : 'menu-links'}>
+                            {renderLinks()}
+                        </div>
                     </div>
                     <div className="links">{renderLinks()}</div>
                 </nav>
@@ -100,13 +128,13 @@ const Nav: React.FC = () => {
             <div className="exterior">
                 {/* 全局背景 */}
                 <div className="bg">
-                    <LazyImage className="bg-img" src={`/img/bg/${imgNumRef.current}.webp`} alt="bg" noLoading />
+                    <LazyImage className="bg-img" src={`/img/bg/${backgroundNumber}.webp`} alt="bg" noLoading />
                 </div>
                 {/* 滚动 */}
                 <div className="scroll-bar">
-                    <div className={`top-icon-wrap top-icon-${isTopShow}`} onClick={scrollToTop}>
+                    <button type="button" aria-label="回到顶部" className={`top-icon-wrap top-icon-${isTopShow}`} onClick={scrollToTop}>
                         <LazyImage className="top-icon" src="/icon/cupid.webp" alt="go-top" />
-                    </div>
+                    </button>
                     <LazyImage className={`heart-${isHeartShow ? '' : 'arrow-'}icon heart-icon-${isTopShow}`} src={`/icon/${isHeartShow ? 'target' : 'cupid-1'}.webp`} alt="heart" />
                     {isArrowShow && <LazyImage className={`arrow-icon arrow-icon-${isArrowShow}`} src="/icon/cupid-2.webp" style={{ top: window.innerHeight - 136 + 'px' }} alt="arrow" />}
                 </div>

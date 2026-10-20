@@ -1,114 +1,60 @@
-name: Next.js Blog CI/CD
+name: Local readiness checks
 
 on:
-  push:
-    branches:
-      - main  # 主分支触发部署
-    paths-ignore:   # 下列文件的变更不触发部署
-      - README.md
-      - README_*.md
-      - LICENSE
-      - '**.md'
-      - '.vscode/**'
-      - '.idea/**'
+    push:
+        branches: [main]
+    pull_request:
+    workflow_dispatch:
+
+permissions:
+    contents: read
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [20.x]  # Next.js 14 推荐使用 Node.js 18+
-
-    steps:
-      # 1. 检出代码
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      # 2. 设置 Node.js 环境
-      - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      # 3. 设置 pnpm
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-          run_install: false
-
-      # 4. 获取 pnpm store 目录
-      - name: Get pnpm store directory
-        id: pnpm-cache
-        shell: bash
-        run: |
-          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-
-      # 5. 缓存依赖
-      - name: Setup pnpm cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-store-
-
-      # 6. 安装依赖
-      - name: Install Dependencies
-        run: pnpm install --frozen-lockfile
-
-      # 7. 创建环境变量文件
-      - name: Create .env file
-        run: |
-          echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> .env
-          echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }}" >> .env
-          echo "NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }}" >> .env
-          echo "NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}" >> .env
-
-      # 8. 生成 Prisma Client
-      - name: Generate Prisma Client
-        run: pnpm prisma generate
-
-      # 9. 代码检查（可选）
-      - name: Lint Code
-        run: pnpm lint || true  # 不阻塞部署
-
-      # 10. 构建 Next.js 项目
-      - name: Build Next.js Application
-        run: pnpm build
+    verify:
+        runs-on: ubuntu-latest
+        services:
+            mysql:
+                image: mysql:8.0
+                env:
+                    MYSQL_ROOT_PASSWORD: ci-only-root
+                    MYSQL_DATABASE: blog_ci
+                    MYSQL_USER: blog_ci
+                    MYSQL_PASSWORD: ci-only-password
+                ports:
+                    - 3306:3306
+                options: >-
+                    --health-cmd="mysqladmin ping -h localhost -pci-only-root"
+                    --health-interval=10s
+                    --health-timeout=5s
+                    --health-retries=10
         env:
-          NODE_ENV: production
-
-      # 11. 部署到服务器
-      - name: Deploy to Server
-        uses: easingthemes/ssh-deploy@main
-        with:
-          SSH_PRIVATE_KEY: ${{ secrets.TENTCENT_BLOG }}
-          ARGS: "-rlgoDzvc -i --delete"
-          SOURCE: ".next/ public/ package.json pnpm-lock.yaml prisma/ .env next.config.mjs"
-          REMOTE_HOST: ${{ secrets.SSH_HOST }}
-          REMOTE_USER: ${{ secrets.SSH_NAME }}
-          TARGET: /usr/local/meow/blog/
-          EXCLUDE: "/node_modules/, /.git/, /.github/"
-          SCRIPT_BEFORE: |
-            whoami
-            ls -al
-          SCRIPT_AFTER: |
-            cd /usr/local/meow/blog
-            export NVM_DIR="$HOME/.nvm"
-            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-            pnpm install --prod --frozen-lockfile
-            pnpm prisma generate
-            pm2 restart blog || pm2 start npm --name "blog" -- start
-            echo "Deployment completed successfully!"
-
-      # 12. 通知部署结果（可选）
-      - name: Deployment Status
-        if: always()
-        run: |
-          if [ ${{ job.status }} == 'success' ]; then
-            echo "✅ Deployment successful!"
-          else
-            echo "❌ Deployment failed!"
-          fi
+            DATABASE_URL: mysql://blog_ci:ci-only-password@127.0.0.1:3306/blog_ci
+            NEXTAUTH_URL: http://localhost:3000
+            SITE_URL: http://localhost:3000
+            NEXTAUTH_SECRET: ci-only-not-for-production-replace-this-secret
+            ADMIN_PATH: /studio-ci-checks
+            HUSKY: '0'
+        steps:
+            - uses: actions/checkout@v4
+            - uses: pnpm/action-setup@v4
+              with:
+                  version: 10.12.4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 22.17.0
+                  cache: pnpm
+            - run: pnpm install --frozen-lockfile
+            - run: pnpm prisma generate
+            # This is an empty, disposable CI database, never the live database.
+            - run: pnpm prisma db push
+            - run: pnpm check
+            - name: API regression
+              run: |
+                  pnpm start > /tmp/blog-ci.log 2>&1 &
+                  APP_PID=$!
+                  trap 'kill "$APP_PID" || true' EXIT
+                  for attempt in $(seq 1 30); do
+                    if curl --fail --silent http://localhost:3000/api/tags > /dev/null; then break; fi
+                    sleep 1
+                  done
+                  TEST_BASE_URL=http://localhost:3000 node --test tests/api.integration.test.mjs

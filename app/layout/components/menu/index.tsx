@@ -1,23 +1,24 @@
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { localStorageUtil } from '@/utils/storage';
+import React from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 import './index.scss';
 
 const AdminContainer: React.FC = () => {
     const router = useRouter();
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const pathname = usePathname();
+    const isSidebarOpen = true;
+    const adminBasePath = `/${pathname.split('/').filter(Boolean)[0] || 'backstage'}`;
 
-    const handleLogout = () => {
-        localStorageUtil.remove('access_token');
-        router.push('/smk-admin');
+    const handleLogout = async () => {
+        await signOut({ callbackUrl: `${adminBasePath}/login` });
     };
 
     const menuItems = [
-        { name: '仪表盘', icon: '📊', path: '/admin/dashboard' },
-        { name: '文章管理', icon: '📝', path: '/admin/articles' },
-        { name: '评论管理', icon: '💬', path: '/admin/comments' },
-        { name: '用户管理', icon: '👥', path: '/admin/users' },
-        { name: '系统设置', icon: '⚙️', path: '/admin/settings' }
+        { name: '仪表盘', icon: '📊', path: `${adminBasePath}/dashboard` },
+        { name: '文章管理', icon: '📝', path: `${adminBasePath}/articles` },
+        { name: '评论管理', icon: '💬', path: `${adminBasePath}/comments` },
+        { name: '用户管理', icon: '👥', path: `${adminBasePath}/users` },
+        { name: '系统设置', icon: '⚙️', path: `${adminBasePath}/settings` }
     ];
 
     return (

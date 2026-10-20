@@ -1,150 +1,67 @@
-import { NextRequest } from 'next/server';
 import prisma from '@/lib/prisma';
-import { successResponse, errorResponse, notFoundResponse, unauthorizedResponse, badRequestResponse } from '@/lib/api-response';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth-options';
+import { getAdminUser } from '@/lib/admin-auth';
+import { successResponse, unauthorizedResponse } from '@/lib/api-response';
+import { updateArticleSchema } from '@/lib/validation';
+import { sanitizeArticleHtml } from '@/lib/sanitize';
+import { articleIdFrom, handleApiError, readJson, RequestError } from '@/lib/http';
+import { articleFormData, articleRelations, snapshotArticle, validateRelations } from '@/lib/article-management';
 
-/**
- * 更新文章
- * 需要管理员或编辑者权限
- */
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
-        const session = await getServerSession(authOptions);
-        if (!session || !session.user) {
-            return unauthorizedResponse('Please login first');
-        }
-
-        const user = await prisma.user.findUnique({
-            where: { email: session.user.email! }
-        });
-
-        if (!user || (user.role !== 'ADMIN' && user.role !== 'EDITOR')) {
-            return errorResponse('Insufficient permissions', 403, 403);
-        }
-
-        const id = parseInt(params.id);
-        if (isNaN(id)) {
-            return badRequestResponse('Invalid article ID');
-        }
-
-        const body = await request.json();
-        const { title, description, content, coverImage, tagIds, techStackIds, links, status } = body;
-
-        // 检查文章是否存在
-        const existingArticle = await prisma.article.findUnique({
-            where: { id }
-        });
-
-        if (!existingArticle) {
-            return notFoundResponse('Article not found');
-        }
-
-        // 更新文章
-        const article = await prisma.article.update({
-            where: { id },
-            data: {
-                title: title || existingArticle.title,
-                description: description !== undefined ? description : existingArticle.description,
-                content: content || existingArticle.content,
-                coverImage: coverImage !== undefined ? coverImage : existingArticle.coverImage,
-                status: status || existingArticle.status,
-                publishedAt: status === 'PUBLISHED' && !existingArticle.publishedAt ? new Date() : existingArticle.publishedAt,
-                tags: tagIds
-                    ? {
-                          deleteMany: {},
-                          create: tagIds.map((tagId: number) => ({
-                              tag: {
-                                  connect: { id: tagId }
-                              }
-                          }))
-                      }
-                    : undefined,
-                techStack: techStackIds
-                    ? {
-                          deleteMany: {},
-                          create: techStackIds.map((techId: number) => ({
-                              tech: {
-                                  connect: { id: techId }
-                              }
-                          }))
-                      }
-                    : undefined,
-                links: links
-                    ? {
-                          deleteMany: {},
-                          create: links.map((link: any) => ({
-                              title: link.title,
-                              url: link.url,
-                              icon: link.icon,
-                              linkType: link.type || 'OTHER'
-                          }))
-                      }
-                    : undefined
-            },
-            include: {
-                tags: {
-                    include: {
-                        tag: true
-                    }
+        const user = await getAdminUser();
+        if (!user) return unauthorizedResponse('请重新登录');
+        const id = articleIdFrom((await params).id);
+        const data = await readJson(request, updateArticleSchema);
+        if (data.expectedVersion === undefined) throw new RequestError('请重新加载文章后再保存', 409);
+        const article = await prisma.$transaction(async (tx) => {
+            await tx.$queryRaw`SELECT id FROM articles WHERE id = ${id} FOR UPDATE`;
+            const current = await tx.article.findFirst({ where: { id, deletedAt: null }, include: articleRelations });
+            if (!current) throw new RequestError('文章不存在或已被移入回收站', 404);
+            if (current.version !== data.expectedVersion) throw new RequestError('文章已在其他页面更新，草稿已保留，请重新加载后合并', 409);
+            await validateRelations(tx, data.tagIds, data.techStackIds);
+            await snapshotArticle(tx, current, user.id);
+            const { tagIds, techStackIds, links, publishedAt } = data;
+            const fields = { title: data.title, description: data.description, coverImage: data.coverImage, status: data.status };
+            return tx.article.update({
+                where: { id },
+                data: {
+                    ...fields,
+                    content: data.content === undefined ? undefined : sanitizeArticleHtml(data.content),
+                    publishedAt: publishedAt
+                        ? new Date(publishedAt)
+                        : (data.status || current.status) === 'PUBLISHED'
+                          ? current.publishedAt || new Date()
+                          : publishedAt === null
+                            ? null
+                            : current.publishedAt,
+                    version: { increment: 1 },
+                    tags: tagIds === undefined ? undefined : { deleteMany: {}, create: tagIds.map((tagId) => ({ tagId })) },
+                    techStack: techStackIds === undefined ? undefined : { deleteMany: {}, create: techStackIds.map((techId) => ({ techId })) },
+                    links: links === undefined ? undefined : { deleteMany: {}, create: links.map(({ type, ...link }) => ({ ...link, linkType: type })) }
                 },
-                techStack: {
-                    include: {
-                        tech: true
-                    }
-                },
-                links: true
-            }
+                include: articleRelations
+            });
         });
-
-        return successResponse(article, 'Article updated successfully');
+        return successResponse(articleFormData(article), '文章已保存');
     } catch (error) {
-        console.error('Error updating article:', error);
-        return errorResponse('Failed to update article');
+        return handleApiError(error);
     }
 }
 
-/**
- * 删除文章
- * 需要管理员权限
- */
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(_request: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
-        const session = await getServerSession(authOptions);
-        if (!session || !session.user) {
-            return unauthorizedResponse('Please login first');
-        }
-
-        const user = await prisma.user.findUnique({
-            where: { email: session.user.email! }
+        const user = await getAdminUser(['ADMIN']);
+        if (!user) return unauthorizedResponse('需要管理员登录');
+        const id = articleIdFrom((await params).id);
+        await prisma.$transaction(async (tx) => {
+            await tx.$queryRaw`SELECT id FROM articles WHERE id = ${id} FOR UPDATE`;
+            const article = await tx.article.findFirst({ where: { id, deletedAt: null }, include: articleRelations });
+            if (!article) throw new RequestError('文章不存在或已经删除', 404);
+            await snapshotArticle(tx, article, user.id);
+            await tx.article.update({ where: { id }, data: { deletedAt: new Date(), version: { increment: 1 } } });
         });
-
-        if (!user || user.role !== 'ADMIN') {
-            return errorResponse('Only administrators can delete articles', 403, 403);
-        }
-
-        const id = parseInt(params.id);
-        if (isNaN(id)) {
-            return badRequestResponse('Invalid article ID');
-        }
-
-        // 检查文章是否存在
-        const existingArticle = await prisma.article.findUnique({
-            where: { id }
-        });
-
-        if (!existingArticle) {
-            return notFoundResponse('Article not found');
-        }
-
-        // 删除文章（关联数据会自动级联删除）
-        await prisma.article.delete({
-            where: { id }
-        });
-
-        return successResponse(null, 'Article deleted successfully');
+        return successResponse(null, '已移入回收站，可恢复为草稿');
     } catch (error) {
-        console.error('Error deleting article:', error);
-        return errorResponse('Failed to delete article');
+        return handleApiError(error);
     }
 }

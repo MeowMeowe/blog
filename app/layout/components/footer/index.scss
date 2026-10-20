@@ -14,10 +14,12 @@ footer {
         animation: scroll-circle 8s linear infinite;
     }
     .logos {
-        width: 100%;
-        height: 40px;
+        width: min(100% - 32px, 720px);
+        min-height: 40px;
         @include flexCenter;
         flex-direction: row;
+        flex-wrap: wrap;
+        row-gap: 4px;
         &-items {
             width: 30px;
             height: 40px;
@@ -31,6 +33,19 @@ footer {
             &:hover {
                 width: 40px;
             }
+        }
+    }
+}
+
+@media (max-width: 560px) {
+    footer {
+        padding: 20px 16px 14px;
+        box-sizing: border-box;
+        text-align: center;
+
+        .logos {
+            width: min(100%, 340px);
+            margin: 4px 0 8px;
         }
     }
 }

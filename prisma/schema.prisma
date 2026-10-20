@@ -22,6 +22,7 @@ model User {
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
   lastLoginAt   DateTime? @map("last_login_at")
+  sessionVersion Int     @default(0) @map("session_version")
   
   articles      Article[]
 
@@ -53,17 +54,34 @@ model Article {
   createdAt   DateTime       @default(now()) @map("created_at")
   updatedAt   DateTime       @updatedAt @map("updated_at")
   publishedAt DateTime?      @map("published_at")
+  deletedAt   DateTime?      @map("deleted_at")
+  version     Int            @default(0)
   
   author      User?          @relation(fields: [authorId], references: [id], onDelete: SetNull)
   tags        ArticleTag[]
   techStack   ArticleTechStack[]
   links       ArticleLink[]
+  revisions   ArticleRevision[]
 
   @@index([status])
   @@index([createdAt])
   @@index([publishedAt])
   @@index([authorId])
+  @@index([deletedAt, status, publishedAt])
   @@map("articles")
+}
+
+model ArticleRevision {
+  id        Int      @id @default(autoincrement())
+  articleId Int      @map("article_id")
+  editorId  Int?     @map("editor_id")
+  title     String   @db.VarChar(255)
+  snapshot  Json
+  createdAt DateTime @default(now()) @map("created_at")
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@index([articleId, createdAt])
+  @@map("article_revisions")
 }
 
 enum ArticleStatus {

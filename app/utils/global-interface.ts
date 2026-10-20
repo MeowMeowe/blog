@@ -31,7 +31,7 @@ export type IResponse<T> = {
     /*
      *  返回数据
      */
-    data?: any;
+    data?: T;
     /*
      *  当前时间
      */

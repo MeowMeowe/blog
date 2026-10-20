@@ -1,95 +1,33 @@
-import { NextRequest } from 'next/server';
 import prisma from '@/lib/prisma';
-import { successResponse, errorResponse, unauthorizedResponse, badRequestResponse } from '@/lib/api-response';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth-options';
+import { getAdminUser } from '@/lib/admin-auth';
+import { successResponse, unauthorizedResponse } from '@/lib/api-response';
+import { createArticleSchema } from '@/lib/validation';
+import { sanitizeArticleHtml } from '@/lib/sanitize';
+import { handleApiError, readJson } from '@/lib/http';
+import { articleFormData, articleRelations, validateRelations } from '@/lib/article-management';
 
-/**
- * 创建新文章
- * 需要管理员或编辑者权限
- */
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
     try {
-        // 检查用户认证
-        const session = await getServerSession(authOptions);
-        if (!session || !session.user) {
-            return unauthorizedResponse('Please login first');
-        }
-
-        // 检查权限（只有 admin 和 editor 可以创建文章）
-        const user = await prisma.user.findUnique({
-            where: { email: session.user.email! }
-        });
-
-        if (!user || (user.role !== 'ADMIN' && user.role !== 'EDITOR')) {
-            return errorResponse('Insufficient permissions', 403, 403);
-        }
-
-        const body = await request.json();
-        const { title, description, content, coverImage, tagIds, techStackIds, links, status } = body;
-
-        // 验证必填字段
-        if (!title || !content) {
-            return badRequestResponse('Title and content are required');
-        }
-
-        // 创建文章
-        const article = await prisma.article.create({
-            data: {
-                title,
-                description,
-                content,
-                coverImage,
-                authorId: user.id,
-                status: status || 'DRAFT',
-                publishedAt: status === 'PUBLISHED' ? new Date() : null,
-                tags: tagIds
-                    ? {
-                          create: tagIds.map((tagId: number) => ({
-                              tag: {
-                                  connect: { id: tagId }
-                              }
-                          }))
-                      }
-                    : undefined,
-                techStack: techStackIds
-                    ? {
-                          create: techStackIds.map((techId: number) => ({
-                              tech: {
-                                  connect: { id: techId }
-                              }
-                          }))
-                      }
-                    : undefined,
-                links: links
-                    ? {
-                          create: links.map((link: any) => ({
-                              title: link.title,
-                              url: link.url,
-                              icon: link.icon,
-                              linkType: link.type || 'OTHER'
-                          }))
-                      }
-                    : undefined
-            },
-            include: {
-                tags: {
-                    include: {
-                        tag: true
-                    }
+        const user = await getAdminUser();
+        if (!user) return unauthorizedResponse('请重新登录');
+        const { tagIds, techStackIds, links, publishedAt, ...data } = await readJson(request, createArticleSchema);
+        const article = await prisma.$transaction(async (tx) => {
+            await validateRelations(tx, tagIds, techStackIds);
+            return tx.article.create({
+                data: {
+                    ...data,
+                    content: sanitizeArticleHtml(data.content),
+                    authorId: user.id,
+                    publishedAt: publishedAt ? new Date(publishedAt) : data.status === 'PUBLISHED' ? new Date() : null,
+                    tags: { create: (tagIds || []).map((tagId) => ({ tagId })) },
+                    techStack: { create: (techStackIds || []).map((techId) => ({ techId })) },
+                    links: { create: (links || []).map(({ type, ...link }) => ({ ...link, linkType: type })) }
                 },
-                techStack: {
-                    include: {
-                        tech: true
-                    }
-                },
-                links: true
-            }
+                include: articleRelations
+            });
         });
-
-        return successResponse(article, 'Article created successfully');
+        return successResponse(articleFormData(article), '文章已创建');
     } catch (error) {
-        console.error('Error creating article:', error);
-        return errorResponse('Failed to create article');
+        return handleApiError(error);
     }
 }

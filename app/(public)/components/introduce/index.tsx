@@ -1,27 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getArticles } from '@/api-client/articles';
 import './index.scss';
 
 const Introduce: React.FC = () => {
+    const [articleCount, setArticleCount] = useState<number | null>(null);
+
+    useEffect(() => {
+        getArticles({ page: 1, pageSize: 1 })
+            .then((response) => setArticleCount(response.data.pagination.total))
+            .catch(() => setArticleCount(null));
+    }, []);
+
     const stats = [
         {
-            name: '文章总数',
-            value: '0',
+            name: '篇文章',
+            value: articleCount === null ? '—' : String(articleCount),
             icon: '/img/stats/article.webp'
         },
         {
-            name: '评论总数',
-            value: '0',
-            icon: '/img/stats/comment.webp'
+            name: '时间线',
+            value: '21–26',
+            icon: '/icon/clock.webp'
         },
         {
-            name: '访问量',
-            value: '0',
-            icon: '/img/stats/views.webp'
+            name: '主力方向',
+            value: 'Vue',
+            icon: '/icon/Vue.webp'
         },
         {
-            name: '点赞数',
-            value: '0',
-            icon: '/img/stats/likes.webp'
+            name: '能力延伸',
+            value: 'Node',
+            icon: '/icon/Nodejs.webp'
         }
     ];
 
@@ -30,18 +39,21 @@ const Introduce: React.FC = () => {
             <div className="introduce-header">
                 <div className="introduce-title">
                     <img src="/img/stats/overview.webp" alt="overview" className="introduce-title-icon" />
-                    <h2>网站概况</h2>
+                    <div>
+                        <span>ABOUT THIS BLOG</span>
+                        <h2>写真实做过的事</h2>
+                    </div>
                 </div>
             </div>
             <div className="introduce-body">
                 <div className="introduce-content">
-                    <p>欢迎来到 MeowGod&apos;s Blog，这里是一个分享技术、记录生活的个人博客。</p>
-                    <p>本站使用 React + TypeScript + Node.js 开发，采用响应式设计，支持多端访问。</p>
+                    <p>这里记录前端项目、跨端实践和逐渐延伸到 Node、Python 的工作边界。</p>
+                    <p>旧文章保留当时的判断，新文章尽量把取舍和踩坑写完整。</p>
                 </div>
                 <div className="introduce-stats">
                     <div className="introduce-stats-grid">
-                        {stats.map((stat, index) => (
-                            <div key={index} className="introduce-stats-item">
+                        {stats.map((stat) => (
+                            <div key={stat.name} className="introduce-stats-item">
                                 <img src={stat.icon} alt={stat.name} />
                                 <div className="stat-info">
                                     <span className="stat-value">{stat.value}</span>

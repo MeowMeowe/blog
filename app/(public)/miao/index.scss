@@ -6,11 +6,16 @@
     align-items: center;
     .word {
         color: #ffffff;
-        font-size: 36px;
-        line-height: 60px;
+        font-size: clamp(24px, 4vw, 36px);
+        line-height: 1.8;
         text-align: center;
         padding: 10px;
         white-space: pre-line;
         transform: translateY(-33px);
+        max-width: min(900px, calc(100% - 48px));
+        padding: 24px;
+        border-radius: 18px;
+        background: rgba(13, 28, 35, 0.72);
+        box-sizing: border-box;
     }
 }

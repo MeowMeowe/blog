@@ -21,6 +21,12 @@ dist-ssr
 
 # Runtime and generated files
 *.sock
+*.tsbuildinfo
+/.pnpm-store/
+/tmp/
+/.storage/
+/.backups/
+/artifacts/
 
 # Editor directories and files
 .vscode/*

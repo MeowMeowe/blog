@@ -29,7 +29,9 @@ const Home: React.FC = () => {
 
     return (
         <div className="one-word">
-            <p className="word">{word}</p>
+            <p className="word" role="status">
+                {word || '正在捡起一句话…'}
+            </p>
         </div>
     );
 };

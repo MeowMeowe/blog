@@ -28,6 +28,7 @@ CREATE TABLE IF NOT EXISTS users (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   last_login_at TIMESTAMP NULL COMMENT '最后登录时间',
+  session_version INT NOT NULL DEFAULT 0,
   INDEX idx_email (email),
   INDEX idx_username (username),
   INDEX idx_role (role)
@@ -50,12 +51,25 @@ CREATE TABLE IF NOT EXISTS articles (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
   published_at TIMESTAMP NULL COMMENT '发布时间',
+  deleted_at DATETIME(3) NULL,
+  version INT NOT NULL DEFAULT 0,
   INDEX idx_status (status),
   INDEX idx_created_at (created_at),
   INDEX idx_published_at (published_at),
   INDEX idx_author_id (author_id),
   FOREIGN KEY (author_id) REFERENCES users(id) ON DELETE SET NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='文章表';
+
+CREATE TABLE IF NOT EXISTS article_revisions (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  article_id INT NOT NULL,
+  editor_id INT NULL,
+  title VARCHAR(255) NOT NULL,
+  snapshot JSON NOT NULL,
+  created_at DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+  INDEX article_revisions_article_id_created_at_idx (article_id, created_at),
+  FOREIGN KEY (article_id) REFERENCES articles(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ============================================
 -- 3. 标签表 (tags)

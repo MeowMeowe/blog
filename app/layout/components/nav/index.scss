@@ -17,6 +17,7 @@ $bgc: rgba(0, 0, 0, 0.25);
     transition: all 0.5s;
 
     .logo {
+        color: inherit;
         font-family: Pacifico-Regular;
         cursor: pointer;
         user-select: none;
@@ -307,4 +308,16 @@ $bgc: rgba(0, 0, 0, 0.25);
             display: none;
         }
     }
+}
+.menu-toggle,
+.scroll-bar button.top-icon-wrap {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+}
+.menu-toggle:focus-visible,
+.scroll-bar button:focus-visible {
+    outline: 3px solid #5ce1c0;
+    outline-offset: 4px;
 }
